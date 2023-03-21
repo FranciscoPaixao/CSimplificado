@@ -10,11 +10,12 @@ private void imprimir(String descricao, String lexema) {
 
 %}
 
-
+%public
 %class AnalisadorLexico
 %type void
 %line
 %column
+%unicode
 
 BRANCO = [\n| |\t|\r]
 D = [0-9]
