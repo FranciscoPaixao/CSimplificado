@@ -43,6 +43,35 @@ COMENT = "//".*\n
 "main"                         { imprimir("Palavra reservada main", yytext()); }
 "return"                         { imprimir("Palavra reservada return", yytext()); }
 
+"="                         { imprimir("Operador de Atribuição =", yytext()); }
+
+"+"                         { imprimir("Operador aritmético +", yytext()); }
+"-"                         { imprimir("Operador aritmético -", yytext()); }
+"*"                         { imprimir("Operador aritmético *", yytext()); }
+"/"                         { imprimir("Operador aritmético /", yytext()); }
+"%"                         { imprimir("Operador aritmético %", yytext()); }
+
+"&&"                         { imprimir("Operador lógico &&", yytext()); }
+"||"                         { imprimir("Operador lógico ||", yytext()); }
+"!"                         { imprimir("Operador lógico !", yytext()); }
+
+"=>"                         { imprimir("Operador de Comparação =>", yytext()); }
+">="                         { imprimir("Operador de Comparação >=", yytext()); }
+"<"                         { imprimir("Operador de Comparação <", yytext()); }
+"<="                         { imprimir("Operador de Comparação <=", yytext()); }
+"!="                         { imprimir("Operador de Comparação !=", yytext()); }
+"=="                         { imprimir("Operador de Comparação ==", yytext()); }
+
+"("                         { imprimir("Símbolo especial (", yytext()); }
+")"                         { imprimir("Símbolo especial )", yytext()); }
+"["                         { imprimir("Símbolo especial [", yytext()); }
+"]"                         { imprimir("Símbolo especial ]", yytext()); }
+"{"                         { imprimir("Símbolo especial {", yytext()); }
+"}"                         { imprimir("Símbolo especial }", yytext()); }
+","                         { imprimir("Símbolo especial ,", yytext()); }
+";"                         { imprimir("Símbolo especial ;", yytext()); }
+
+
 {BRANCO}                     { imprimir("Espaço em branco/tab/linha", ""); }
 {ID}                         { imprimir("Identificador", yytext()); }
 {TEXTO}                         { imprimir("TEXTO", yytext()); }
