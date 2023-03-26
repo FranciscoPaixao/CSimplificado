@@ -12,7 +12,7 @@ private void imprimir(String descricao, String lexema) {
 
 %public
 %class AnalisadorLexico
-%type void
+%type ALToken
 %line
 %column
 %unicode
@@ -43,8 +43,9 @@ COMENT = "//".*\n
 "main"                         { imprimir("Palavra reservada main", yytext()); }
 "return"                         { imprimir("Palavra reservada return", yytext()); }
 
-{BRANCO}                     { imprimir("Espaço em branco", yytext()); }
+{BRANCO}                     { imprimir("Espaço em branco/tab/linha", ""); }
 {ID}                         { imprimir("Identificador", yytext()); }
+{TEXTO}                         { imprimir("TEXTO", yytext()); }
 {COMP}                         { imprimir("Operador", yytext()); }
 {NUM_INT}                     { imprimir("Número Inteiro", yytext()); }
 {NUM_DEC}                     { imprimir("Número Decimal", yytext()); }
