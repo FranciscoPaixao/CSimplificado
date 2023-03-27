@@ -41,7 +41,7 @@ COMENT = "//".*\n
 "float"                       { return analise("FLOAT","Palavra reservada ", yytext()); }
 "char"                       { return analise("CHAR","Palavra reservada ", yytext()); }
 "boolean"                       { return analise("BOOLEAN","Palavra reservada ", yytext()); }
-"void"                       { return analise("VOId","Palavra reservada ", yytext()); }
+"void"                       { return analise("VOID","Palavra reservada ", yytext()); }
 "if"                         { return analise("IF","Palavra reservada ", yytext()); }
 "else"                         { return analise("ELSE","Palavra reservada ", yytext()); }
 "for"                         { return analise("FOR","Palavra reservada ", yytext()); }
