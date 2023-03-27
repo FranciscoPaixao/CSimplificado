@@ -53,13 +53,8 @@ public class Controlador {
         return erros;
     }
 
-    public String[][] obterTabelaDeSimbolos() {
-        String[][] tabela = new String[tabelaDeSimbolos.size()][3];
-        for (int i = 0; i < tabelaDeSimbolos.size(); i++) {
-            tabela[i][0] = tabelaDeSimbolos.get(i).lexema;
-            tabela[i][1] = tabelaDeSimbolos.get(i).token;
-            tabela[i][2] = tabelaDeSimbolos.get(i).descricao;
-        }
-        return tabela;
+    public ArrayList<TipoAnalise> obterTabelaDeSimbolos() {
+
+        return this.tabelaDeSimbolos;
     }
 }

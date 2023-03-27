@@ -5,13 +5,13 @@
 package br.sou.dev.analisadorlexico;
 
 import br.sou.dev.analisadorlexico.classes.Controlador;
+import br.sou.dev.analisadorlexico.classes.TipoAnalise;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 
 public class TelaMain extends javax.swing.JFrame {
 
@@ -61,7 +61,7 @@ public class TelaMain extends javax.swing.JFrame {
 
         tb_TabelaDeSimbolos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null}
             },
             new String [] {
                 "Lexema", "TOKEN", "Descrição"
@@ -94,6 +94,7 @@ public class TelaMain extends javax.swing.JFrame {
         sp_CodigoFonte.setToolTipText("");
 
         tp_CodigoFonte.setEditable(false);
+        tp_CodigoFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         sp_CodigoFonte.setViewportView(tp_CodigoFonte);
 
         getContentPane().add(sp_CodigoFonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 380, 240));
@@ -155,14 +156,10 @@ public class TelaMain extends javax.swing.JFrame {
             try {
                 controlador.fazerAnaliseLexica();
                 tp_CodigoFonte.setText(controlador.obterArquivoTXT());
-                tp_Erros.setText(" ");
+                tp_Erros.setText("");
                 tp_Erros.setText(controlador.obterErros());
 
-                DefaultTableModel model = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
-                removeLinhas();
-                for (String[] linha : controlador.obterTabelaDeSimbolos()) {
-                    model.addRow(linha);
-                }
+                atualizarTabela();
             } catch (IOException ex) {
                 Logger.getLogger(TelaMain.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -182,10 +179,12 @@ public class TelaMain extends javax.swing.JFrame {
         }
     }
 
-    public void removeLinhas() {
-        DefaultTableModel tablemodel = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
-        tablemodel.getDataVector().removeAllElements();
-        tablemodel.fireTableDataChanged();
+    public void atualizarTabela() {
+        DefaultTableModel modelo = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
+        modelo.setNumRows(0);
+        for (TipoAnalise analise : controlador.obterTabelaDeSimbolos()) {
+            modelo.addRow(new Object[]{analise.lexema, analise.token, analise.descricao});
+        }
     }
 
     /**
