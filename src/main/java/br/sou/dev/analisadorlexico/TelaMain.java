@@ -5,18 +5,12 @@
 package br.sou.dev.analisadorlexico;
 
 import br.sou.dev.analisadorlexico.classes.Controlador;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
 
 public class TelaMain extends javax.swing.JFrame {
