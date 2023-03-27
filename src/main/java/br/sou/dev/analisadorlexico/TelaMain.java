@@ -46,9 +46,9 @@ public class TelaMain extends javax.swing.JFrame {
     private void initComponents() {
 
         fileChooser = new javax.swing.JFileChooser();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        sp_Tabela = new javax.swing.JScrollPane();
         tb_TabelaDeSimbolos = new javax.swing.JTable();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        sp_CodigoFonte = new javax.swing.JScrollPane();
         tp_CodigoFonte = new javax.swing.JTextPane();
         bt_SelecionarArquivo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -56,8 +56,8 @@ public class TelaMain extends javax.swing.JFrame {
         tf_CaminhoArquivo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         bt_AnaliseLexica = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        ta_Erros = new javax.swing.JTextArea();
+        sp_Erros = new javax.swing.JScrollPane();
+        tp_Erros = new javax.swing.JTextPane();
 
         fileChooser.setFileFilter(new filtroCustomizado());
 
@@ -91,21 +91,21 @@ public class TelaMain extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tb_TabelaDeSimbolos);
+        sp_Tabela.setViewportView(tb_TabelaDeSimbolos);
         if (tb_TabelaDeSimbolos.getColumnModel().getColumnCount() > 0) {
             tb_TabelaDeSimbolos.getColumnModel().getColumn(0).setResizable(false);
             tb_TabelaDeSimbolos.getColumnModel().getColumn(1).setResizable(false);
             tb_TabelaDeSimbolos.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 430, 400));
+        getContentPane().add(sp_Tabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 430, 400));
 
-        jScrollPane1.setToolTipText("");
+        sp_CodigoFonte.setToolTipText("");
 
         tp_CodigoFonte.setEditable(false);
-        jScrollPane1.setViewportView(tp_CodigoFonte);
+        sp_CodigoFonte.setViewportView(tp_CodigoFonte);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 380, 240));
+        getContentPane().add(sp_CodigoFonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 380, 240));
 
         bt_SelecionarArquivo.setText("Selecionar arquivo");
         bt_SelecionarArquivo.addActionListener(new java.awt.event.ActionListener() {
@@ -127,20 +127,17 @@ public class TelaMain extends javax.swing.JFrame {
         jLabel3.setText("Arquivo:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        bt_AnaliseLexica.setText("Comecar Analise Lexica");
+        bt_AnaliseLexica.setText("Iniciar Análise léxica");
         bt_AnaliseLexica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bt_AnaliseLexicaMouseClicked(evt);
             }
         });
-        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, -1, -1));
+        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, -1));
 
-        ta_Erros.setEditable(false);
-        ta_Erros.setColumns(20);
-        ta_Erros.setRows(5);
-        jScrollPane2.setViewportView(ta_Erros);
+        sp_Erros.setViewportView(tp_Erros);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 380, 130));
+        getContentPane().add(sp_Erros, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 380, 130));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -148,10 +145,11 @@ public class TelaMain extends javax.swing.JFrame {
     private void bt_SelecionarArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_SelecionarArquivoActionPerformed
 
         fileChooser.showOpenDialog(null);
-        File arquivo = fileChooser.getSelectedFile();
-        this.caminhoArquivo = arquivo.getAbsolutePath();
-        tf_CaminhoArquivo.setText(caminhoArquivo);
-
+        if (fileChooser.getSelectedFile() != null) {
+            File arquivo = fileChooser.getSelectedFile();
+            this.caminhoArquivo = arquivo.getAbsolutePath();
+            tf_CaminhoArquivo.setText(caminhoArquivo);
+        }
 
     }//GEN-LAST:event_bt_SelecionarArquivoActionPerformed
 
@@ -166,9 +164,9 @@ public class TelaMain extends javax.swing.JFrame {
             try {
                 controlador.fazerAnaliseLexica();
                 tp_CodigoFonte.setText(controlador.obterArquivoTXT());
-                ta_Erros.selectAll();
-                ta_Erros.replaceSelection("");
-                ta_Erros.setText(controlador.obterErros());
+                tp_Erros.setText(" ");
+                tp_Erros.setText(controlador.obterErros());
+
                 DefaultTableModel model = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
                 removeLinhas(tb_TabelaDeSimbolos);
                 for (String[] linha : controlador.obterTabelaDeSimbolos()) {
@@ -242,12 +240,12 @@ public class TelaMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea ta_Erros;
+    private javax.swing.JScrollPane sp_CodigoFonte;
+    private javax.swing.JScrollPane sp_Erros;
+    private javax.swing.JScrollPane sp_Tabela;
     private javax.swing.JTable tb_TabelaDeSimbolos;
     private javax.swing.JTextField tf_CaminhoArquivo;
     private javax.swing.JTextPane tp_CodigoFonte;
+    private javax.swing.JTextPane tp_Erros;
     // End of variables declaration//GEN-END:variables
 }
