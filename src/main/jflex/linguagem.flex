@@ -29,8 +29,8 @@ L = [a-zA-Z_]
 NUM_INT = {D}+
 NUM_DEC = {D}+\.{D}+
 ERRO_DEC = {D}+\.
-ERRO_ID = {D}({L}|{D})+
-ID = {L}({L}|{D})+
+ERRO_ID = {D}({L}|{D})*
+ID = {L}({L}|{D})*
 TEXTO = \".*\"
 COMP = (">=" | "<=" | ">" | "<" | "!=" | "==")
 COMENT = "//".*\n
