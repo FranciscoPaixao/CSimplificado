@@ -1,5 +1,5 @@
-int f22 
-Char "Teste"
-" int 23
+int teste123
+char "Teste"
+" int 12
+string t
 2safer 1.
-

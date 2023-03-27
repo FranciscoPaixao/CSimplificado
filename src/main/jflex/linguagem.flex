@@ -1,18 +1,24 @@
 
-package br.sou.dev.analisadorlexico;
+package br.sou.dev.analisadorlexico.classes;
 %%
 
 %{
-
-private void imprimir(String descricao, String lexema) {
-    System.out.println(lexema + " - " + descricao);
+private TipoAnalise analise(String token, String descricao, String lexema){
+    return new TipoAnalise(token, lexema, descricao, yyline, yycolumn, true);
+}
+private TipoAnalise salvaErro(String descricao, String lexema){
+    if(descricao == null){
+        return new TipoAnalise(null, null, "O caractere " + lexema + " é inválido", yyline, yycolumn, false);
+    }else{
+        return new TipoAnalise(null, lexema, descricao, yyline, yycolumn, false);
+    }
 }
 
 %}
 
 %public
 %class AnalisadorLexico
-%type ALToken
+%type TipoAnalise
 %line
 %column
 %unicode
@@ -22,6 +28,8 @@ D = [0-9]
 L = [a-zA-Z_]
 NUM_INT = {D}+
 NUM_DEC = {D}+\.{D}+
+ERRO_DEC = {D}+\.
+ERRO_ID = {D}({L}|{D})+
 ID = {L}({L}|{D})+
 TEXTO = \".*\"
 COMP = (">=" | "<=" | ">" | "<" | "!=" | "==")
@@ -29,55 +37,50 @@ COMENT = "//".*\n
 
 %%
 
-"int"                       { imprimir("Palavra reservada int", yytext()); }
-"float"                       { imprimir("Palavra reservada float", yytext()); }
-"char"                       { imprimir("Palavra reservada char", yytext()); }
-"boolean"                       { imprimir("Palavra reservada boolean", yytext()); }
-"void"                       { imprimir("Palavra reservada void", yytext()); }
-"if"                         { imprimir("Palavra reservada if", yytext()); }
-"else"                         { imprimir("Palavra reservada else", yytext()); }
-"for"                         { imprimir("Palavra reservada for", yytext()); }
-"while"                         { imprimir("Palavra reservada while", yytext()); }
-"scanf"                       { imprimir("Palavra reservada scanf", yytext()); }
-"println"                         { imprimir("Palavra reservada println", yytext()); }
-"main"                         { imprimir("Palavra reservada main", yytext()); }
-"return"                         { imprimir("Palavra reservada return", yytext()); }
+"int"                       { return analise("INT","Palavra reservada ", yytext()); }
+"float"                       { return analise("FLOAT","Palavra reservada ", yytext()); }
+"char"                       { return analise("CHAR","Palavra reservada ", yytext()); }
+"boolean"                       { return analise("BOOLEAN","Palavra reservada ", yytext()); }
+"void"                       { return analise("VOId","Palavra reservada ", yytext()); }
+"if"                         { return analise("IF","Palavra reservada ", yytext()); }
+"else"                         { return analise("ELSE","Palavra reservada ", yytext()); }
+"for"                         { return analise("FOR","Palavra reservada ", yytext()); }
+"while"                         { return analise("WHILE","Palavra reservada ", yytext()); }
+"Scanf"                       { return analise("SCANF","Palavra reservada ", yytext()); }
+"println"                         { return analise("PRINTLN","Palavra reservada ", yytext()); }
+"main"                         { return analise("MAIN","Palavra reservada ", yytext()); }
+"return"                         { return analise("RETURN","Palavra reservada ", yytext()); }
 
-"="                         { imprimir("Operador de Atribuição =", yytext()); }
+"="                         { return analise("=", "Operador de Atribuição =", yytext()); }
 
-"+"                         { imprimir("Operador aritmético +", yytext()); }
-"-"                         { imprimir("Operador aritmético -", yytext()); }
-"*"                         { imprimir("Operador aritmético *", yytext()); }
-"/"                         { imprimir("Operador aritmético /", yytext()); }
-"%"                         { imprimir("Operador aritmético %", yytext()); }
+"+"                         { return analise("+", "Operador aritmético ", yytext()); }
+"-"                         { return analise("-", "Operador aritmético ", yytext()); }
+"*"                         { return analise("*", "Operador aritmético ", yytext()); }
+"/"                         { return analise("/", "Operador aritmético ", yytext()); }
+"%"                         { return analise("%", "Operador aritmético ", yytext()); }
 
-"&&"                         { imprimir("Operador lógico &&", yytext()); }
-"||"                         { imprimir("Operador lógico ||", yytext()); }
-"!"                         { imprimir("Operador lógico !", yytext()); }
+"&&"                         { return analise("&&", "Operador lógico ", yytext()); }
+"||"                         { return analise("||", "Operador lógico ", yytext()); }
+"!"                         { return analise("!", "Operador lógico ", yytext()); }
 
-"=>"                         { imprimir("Operador de Comparação =>", yytext()); }
-">="                         { imprimir("Operador de Comparação >=", yytext()); }
-"<"                         { imprimir("Operador de Comparação <", yytext()); }
-"<="                         { imprimir("Operador de Comparação <=", yytext()); }
-"!="                         { imprimir("Operador de Comparação !=", yytext()); }
-"=="                         { imprimir("Operador de Comparação ==", yytext()); }
-
-"("                         { imprimir("Símbolo especial (", yytext()); }
-")"                         { imprimir("Símbolo especial )", yytext()); }
-"["                         { imprimir("Símbolo especial [", yytext()); }
-"]"                         { imprimir("Símbolo especial ]", yytext()); }
-"{"                         { imprimir("Símbolo especial {", yytext()); }
-"}"                         { imprimir("Símbolo especial }", yytext()); }
-","                         { imprimir("Símbolo especial ,", yytext()); }
-";"                         { imprimir("Símbolo especial ;", yytext()); }
+"("                         { return analise("(", "Símbolo especial ", yytext()); }
+")"                         { return analise(")", "Símbolo especial ", yytext()); }
+"["                         { return analise("[", "Símbolo especial ", yytext()); }
+"]"                         { return analise("]", "Símbolo especial ", yytext()); }
+"{"                         { return analise("{", "Símbolo especial ", yytext()); }
+"}"                         { return analise("}", "Símbolo especial ", yytext()); }
+","                         { return analise(",", "Símbolo especial ", yytext()); }
+";"                         { return analise(";", "Símbolo especial ", yytext()); }
 
 
-{BRANCO}                     { imprimir("Espaço em branco/tab/linha", ""); }
-{ID}                         { imprimir("Identificador", yytext()); }
-{TEXTO}                         { imprimir("TEXTO", yytext()); }
-{COMP}                         { imprimir("Operador", yytext()); }
-{NUM_INT}                     { imprimir("Número Inteiro", yytext()); }
-{NUM_DEC}                     { imprimir("Número Decimal", yytext()); }
-{COMENT}                     { System.out.println("Comentario" + yytext()); }
+{BRANCO}                     {  }
+{ID}                         { return analise("ID", "Identificador", yytext()); }
+{TEXTO}                         { return analise("TEXTO", "Constantes de texto", yytext()); }
+{COMP}                         { return analise("COMP", "Operador", yytext()); }
+{NUM_INT}                     { return analise("NUM_INT", "Número Inteiro", yytext()); }
+{NUM_DEC}                     { return analise("NUM_DEC", "Número Decimal", yytext()); }
+{ERRO_DEC}                     { return salvaErro("O número " + yytext() + " está sem as casa decimais", yytext()); }
+{ERRO_ID}                     { return salvaErro("O identificador " + yytext() + " é inválido", yytext()); }
+{COMENT}                     { return analise("COMENT", "Comentário", yytext()); }
 
-. { System.out.println("Caractere inválido (" + yytext() + ") na linha " + yyline + ", coluna " + yycolumn); }
+. { return salvaErro(null, yytext()); }
