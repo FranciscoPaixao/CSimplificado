@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class Controlador {
 
-    private ArrayList<TipoAnalise> tabelaDeSimbolos;
-    private ArrayList<TipoAnalise> listaErros;
+    private final ArrayList<TipoAnalise> tabelaDeSimbolos;
+    private final ArrayList<TipoAnalise> listaErros;
     private AnalisadorLexico lex;
     private String arquivoTXT;
 

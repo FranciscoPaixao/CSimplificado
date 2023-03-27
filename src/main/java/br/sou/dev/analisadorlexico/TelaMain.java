@@ -159,7 +159,7 @@ public class TelaMain extends javax.swing.JFrame {
                 tp_Erros.setText(controlador.obterErros());
 
                 DefaultTableModel model = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
-                removeLinhas(tb_TabelaDeSimbolos);
+                removeLinhas();
                 for (String[] linha : controlador.obterTabelaDeSimbolos()) {
                     model.addRow(linha);
                 }
@@ -182,8 +182,8 @@ public class TelaMain extends javax.swing.JFrame {
         }
     }
 
-    public void removeLinhas(JTable tabela) {
-        DefaultTableModel tablemodel = (DefaultTableModel) tabela.getModel();
+    public void removeLinhas() {
+        DefaultTableModel tablemodel = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
         tablemodel.getDataVector().removeAllElements();
         tablemodel.fireTableDataChanged();
     }
