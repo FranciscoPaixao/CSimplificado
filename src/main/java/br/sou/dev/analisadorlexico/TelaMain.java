@@ -18,10 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
-/**
- *
- * @author Francisco
- */
+
 public class TelaMain extends javax.swing.JFrame {
 
     Controlador controlador;

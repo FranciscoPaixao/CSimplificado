@@ -5,11 +5,6 @@ package br.sou.dev.analisadorlexico.classes;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-
-/**
- *
- * @author Francisco
- */
 public class TipoAnalise {
     public String token;
     public String lexema;

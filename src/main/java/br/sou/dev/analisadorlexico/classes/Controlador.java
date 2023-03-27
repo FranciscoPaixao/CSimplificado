@@ -12,10 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-/**
- *
- * @author Francisco
- */
 public class Controlador {
 
     private ArrayList<TipoAnalise> tabelaDeSimbolos;
