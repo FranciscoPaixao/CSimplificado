@@ -79,7 +79,7 @@ COMENT = "//".*\n
 {COMP}                         { return analise("COMP", "Operador", yytext()); }
 {NUM_INT}                     { return analise("NUM_INT", "Número Inteiro", yytext()); }
 {NUM_DEC}                     { return analise("NUM_DEC", "Número Decimal", yytext()); }
-{ERRO_DEC}                     { return salvaErro("O número " + yytext() + " está sem as casa decimais", yytext()); }
+{ERRO_DEC}                     { return salvaErro("O número " + yytext() + " está sem as casas decimais", yytext()); }
 {ERRO_ID}                     { return salvaErro("O identificador " + yytext() + " é inválido", yytext()); }
 {COMENT}                     { return analise("COMENT", "Comentário", yytext()); }
 
