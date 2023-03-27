@@ -46,7 +46,7 @@ COMENT = "//".*\n
 "else"                         { return analise("ELSE","Palavra reservada ", yytext()); }
 "for"                         { return analise("FOR","Palavra reservada ", yytext()); }
 "while"                         { return analise("WHILE","Palavra reservada ", yytext()); }
-"Scanf"                       { return analise("SCANF","Palavra reservada ", yytext()); }
+"scanf"                       { return analise("SCANF","Palavra reservada ", yytext()); }
 "println"                         { return analise("PRINTLN","Palavra reservada ", yytext()); }
 "main"                         { return analise("MAIN","Palavra reservada ", yytext()); }
 "return"                         { return analise("RETURN","Palavra reservada ", yytext()); }
