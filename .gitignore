@@ -1,2 +1,8 @@
 target/
 dependency-reduced-pom.xml
+.antlr/CSimplificadoParser.java
+.antlr/CSimplificadoLexer.tokens
+.antlr/CSimplificadoLexer.java
+.antlr/CSimplificadoLexer.interp
+*.tokens
+*.interp
