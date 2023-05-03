@@ -1,7 +1,8 @@
 grammar CSimplificado;
 @header {
-    package br.dev.sou.testeantlr;
+    package br.dev.sou.classes;
 }
+// Gramatica Sintatica
 program: listaFuncoes principal EOF;
 
 listaFuncoes: declaracaoFuncao listaFuncoes |;

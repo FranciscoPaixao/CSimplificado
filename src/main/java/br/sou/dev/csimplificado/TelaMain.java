@@ -5,6 +5,7 @@
 package br.sou.dev.csimplificado;
 
 import br.sou.dev.classes.Controlador;
+import br.sou.dev.classes.DescSimbolo;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -115,13 +116,13 @@ public class TelaMain extends javax.swing.JFrame {
         jLabel3.setText("Arquivo:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        bt_AnaliseLexica.setText("Iniciar Análise léxica");
+        bt_AnaliseLexica.setText("Iniciar Análise Léxica e Sintatica");
         bt_AnaliseLexica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bt_AnaliseLexicaMouseClicked(evt);
             }
         });
-        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, -1, -1));
+        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, -1, -1));
 
         sp_Erros.setViewportView(tp_Erros);
 
@@ -144,21 +145,15 @@ public class TelaMain extends javax.swing.JFrame {
     private void bt_AnaliseLexicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_AnaliseLexicaMouseClicked
         if (this.caminhoArquivo != null) {
             try {
-                controlador.lerArquivo(caminhoArquivo);
+                controlador.LerArquivo(caminhoArquivo);
             } catch (IOException ex) {
                 Logger.getLogger(TelaMain.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            try {
-                controlador.fazerAnaliseLexica();
-                tp_CodigoFonte.setText(controlador.obterArquivoTXT());
-                tp_Erros.setText("");
-                tp_Erros.setText(controlador.obterErros());
-
-                atualizarTabela();
-            } catch (IOException ex) {
-                Logger.getLogger(TelaMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            controlador.FazerAnalise();
+            tp_CodigoFonte.setText(controlador.ObterCodigoFonte());
+            tp_Erros.setText(controlador.obterErros());
+            atualizarTabela();
         }
     }//GEN-LAST:event_bt_AnaliseLexicaMouseClicked
 
@@ -166,20 +161,20 @@ public class TelaMain extends javax.swing.JFrame {
 
         @Override
         public boolean accept(File file) {
-            return file.isDirectory() || file.getAbsolutePath().endsWith(".txt");
+            return file.isDirectory() || file.getAbsolutePath().endsWith(".c");
         }
 
         @Override
         public String getDescription() {
-            return "Text documents (*.txt)";
+            return "C documents (*.c)";
         }
     }
 
     public void atualizarTabela() {
         DefaultTableModel modelo = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
         modelo.setNumRows(0);
-        for (TipoAnalise analise : controlador.obterTabelaDeSimbolos()) {
-            modelo.addRow(new Object[]{analise.lexema, analise.token, analise.descricao});
+        for (DescSimbolo ds : controlador.ObterTabelaDeSimbolos()) {
+            modelo.addRow(new Object[]{ds.lexema, ds.token, ds.descricao});
         }
     }
 
