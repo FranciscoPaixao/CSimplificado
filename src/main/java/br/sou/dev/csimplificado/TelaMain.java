@@ -152,7 +152,7 @@ public class TelaMain extends javax.swing.JFrame {
 
             controlador.FazerAnalise();
             tp_CodigoFonte.setText(controlador.ObterCodigoFonte());
-            tp_Erros.setText(controlador.obterErros());
+            tp_Erros.setText(controlador.obterErrosTexto());
             atualizarTabela();
         }
     }//GEN-LAST:event_bt_AnaliseLexicaMouseClicked
