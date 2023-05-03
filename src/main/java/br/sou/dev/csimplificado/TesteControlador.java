@@ -15,13 +15,11 @@ public class TesteControlador {
 
     public static void main(String[] args) throws IOException {
         Controlador controlador = new Controlador();
-        String arquivo = "C:\\Users\\Francisco\\Documents\\GitHub\\CSimplificado\\teste.c";
+        String arquivo = "C:\\Users\\Francisco\\Documents\\teste.c";
         controlador.LerArquivo(arquivo);
         controlador.FazerAnalise();
         System.out.println("teste");
-        for(DescSimbolo ds: controlador.ObterTabelaDeSimbolos()){
-           System.out.print("Token: " + ds.token);
-           System.out.println(", Lexema: " + ds.lexema);
-        }
+        System.out.println(controlador.errorListener.getLexicalErrors());
+
     }
 }

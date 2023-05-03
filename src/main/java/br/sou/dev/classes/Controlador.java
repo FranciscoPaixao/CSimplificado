@@ -26,7 +26,7 @@ public class Controlador {
     public CSimplificadoLexer lexer;
     public CommonTokenStream tokens;
     private CSimplificadoParser parser;
-    public CSimplificadoErrorListener errorListener;
+    public CSErrorListener errorListener;
 
     public Controlador() {
         this.caminhoArquivo = null;
@@ -34,7 +34,7 @@ public class Controlador {
         this.lexer = null;
         this.tokens = null;
         this.parser = null;
-        this.errorListener = new CSimplificadoErrorListener();
+        this.errorListener = new CSErrorListener();
     }
 
     public void LerArquivo(String caminhoArquivo) throws IOException {
@@ -72,16 +72,23 @@ public class Controlador {
         this.codigoFonte = CharStreams.fromString(codigoFonteString);
     }
 
-    public List<String> obterErrosList() {
-        return errorListener.getErrors();
+  
+    public List<String> obterErrosLexicos() {
+        return errorListener.getSyntaxErrors();
     }
+
     public String obterErrosTexto() {
         String erros = "";
-        for (String erro : errorListener.getErrors()) {
-            erros += erro + "\n";
+        for (String error : errorListener.getSyntaxErrors()) {
+            erros = "Erro sintático: " + error;
+        }
+
+        for (String error : errorListener.getLexicalErrors()) {
+            erros = "Erro léxico: " + error;
         }
         return erros;
     }
+
     public String ObterNomeToken(int tokenID) {
         for (var t : lexer.getTokenTypeMap().entrySet()) {
             if (t.getValue().equals(tokenID)) {
