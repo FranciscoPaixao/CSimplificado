@@ -12,6 +12,7 @@ import java.util.List;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.DiagnosticErrorListener;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -26,6 +27,7 @@ public class Controlador {
     public CSimplificadoLexer lexer;
     public CommonTokenStream tokens;
     private CSimplificadoParser parser;
+    public CSimplificadoErrorListener errorListener;
 
     public Controlador() {
         this.caminhoArquivo = null;
@@ -33,6 +35,7 @@ public class Controlador {
         this.lexer = null;
         this.tokens = null;
         this.parser = null;
+        this.errorListener = new CSimplificadoErrorListener();
     }
 
     public void LerArquivo(String caminhoArquivo) throws IOException {
@@ -43,21 +46,17 @@ public class Controlador {
     public void AtualizarArquivo() throws IOException {
         LerArquivo(caminhoArquivo);
     }
-    public void FazerAnalise(){
-        FazerAnaliseLexica();
-        GerarTokens();
-        FazerAnaliseSintatica();
-    }
-    public void FazerAnaliseLexica() {
+
+    public void FazerAnalise() {
         this.lexer = new CSimplificadoLexer(codigoFonte);
-    }
 
-    public void GerarTokens() {
         this.tokens = new CommonTokenStream(lexer);
-    }
 
-    public void FazerAnaliseSintatica() {
         this.parser = new CSimplificadoParser(tokens);
+
+        parser.removeErrorListeners();
+        parser.addErrorListener(errorListener);
+
         ParseTree tree = parser.program();
     }
 
@@ -74,21 +73,25 @@ public class Controlador {
         this.codigoFonte = CharStreams.fromString(codigoFonteString);
     }
 
-    public String obterErros() {
-        return "teste";
+    public List<String> obterErros() {
+        return errorListener.getErrors();
     }
-    public String ObterNomeToken(int tokenID){
-        for(var t: lexer.getTokenTypeMap().entrySet()){
-            if(t.getValue().equals(tokenID)){
+     public String obterErros() {
+        return errorListener.getErrors();
+    }
+    public String ObterNomeToken(int tokenID) {
+        for (var t : lexer.getTokenTypeMap().entrySet()) {
+            if (t.getValue().equals(tokenID)) {
                 return t.getKey();
             }
         }
         return null;
     }
-    public List<DescSimbolo> ObterTabelaDeSimbolos(){
+
+    public List<DescSimbolo> ObterTabelaDeSimbolos() {
         List<DescSimbolo> listaSimbolos = new ArrayList<>();
-        for(Token t: this.tokens.getTokens()){
-            if(t.getText().equals("<EOF>")){
+        for (Token t : this.tokens.getTokens()) {
+            if (t.getText().equals("<EOF>")) {
                 continue;
             }
             listaSimbolos.add(new DescSimbolo(ObterNomeToken(t.getType()), t.getText(), t.getText()));
