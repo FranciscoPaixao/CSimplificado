@@ -17,9 +17,7 @@ public class TesteControlador {
         Controlador controlador = new Controlador();
         String arquivo = "C:\\Users\\Francisco\\Documents\\GitHub\\CSimplificado\\teste.c";
         controlador.LerArquivo(arquivo);
-        controlador.FazerAnaliseLexica();
-        controlador.GerarTokens();
-        controlador.FazerAnaliseSintatica();
+        controlador.FazerAnalise();
         System.out.println("teste");
         for(DescSimbolo ds: controlador.ObterTabelaDeSimbolos()){
            System.out.print("Token: " + ds.token);
