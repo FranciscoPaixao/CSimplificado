@@ -2,15 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package br.sou.dev.analisadorlexico;
+package br.sou.dev.csimplificado;
 
-import br.sou.dev.analisadorlexico.classes.Controlador;
-import br.sou.dev.analisadorlexico.classes.TipoAnalise;
+import br.sou.dev.classes.Controlador;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaMain extends javax.swing.JFrame {
@@ -53,9 +51,7 @@ public class TelaMain extends javax.swing.JFrame {
         fileChooser.setFileFilter(new filtroCustomizado());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(879, 542));
         setMinimumSize(new java.awt.Dimension(879, 542));
-        setPreferredSize(new java.awt.Dimension(879, 520));
         setSize(new java.awt.Dimension(879, 542));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

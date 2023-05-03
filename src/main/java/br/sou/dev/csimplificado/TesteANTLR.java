@@ -1,8 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-package br.sou.dev.analisadorlexico;
+package br.sou.dev.csimplificado;
 
+import br.dev.sou.testeantlr.CSimplificadoLexer;
+import br.dev.sou.testeantlr.CSimplificadoParser;
 import java.io.IOException;
 import org.antlr.v4.gui.TreeViewer;
 import java.util.Arrays;

@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.analisadorlexico</groupId>
-    <artifactId>AnalisadorLexico</artifactId>
+    <artifactId>CSimplificado</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -44,6 +44,7 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/antlr4</sourceDirectory>
+                            <outputDirectory>${project.basedir}/target/generated-sources/antlr4/br/dev/sou/classes</outputDirectory>
                             <language>Java</language>
                             <listener>true</listener>
                             <visitor>true</visitor>
@@ -79,5 +80,5 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>br.sou.dev.analisadorlexico.TelaMain</exec.mainClass>
     </properties>
-    <name>AnalisadorLexico</name>
+    <name>CSimplificado</name>
 </project>
