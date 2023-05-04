@@ -158,11 +158,58 @@ public class Controlador {
         return erros;
     }
 
+    public String ObterCategoriaToken(String nomeToken) {
+        if(nomeToken.matches("NUM_INT")){
+            return "Número inteiro";
+        }
+        if (nomeToken.matches("NUM_DEC")) {
+            return "Número decimal";
+        }
+
+        if (nomeToken.matches("ID")) {
+            return "Identificador";
+        }
+
+        if (nomeToken.matches("TEXTO")) {
+            return "Constante de texto";
+        }
+
+        if (Arrays.asList("IF", "ELSE", "WHILE", "RETURN", "CHAR", "FLOAT", "INT", "BOOLEAN", "MAIN", "VOID", "FOR", "SCANF", "PRINTLN").contains(nomeToken)) {
+            return "Palavra reservada";
+        }
+
+        if (nomeToken.matches("ASSIGN")) {
+            return "Operador de Atribuição";
+        }
+
+        if (Arrays.asList("ADD", "DIV", "MUL", "DIV", "MOD").contains(nomeToken)) {
+            return "Operador aritmético";
+        }
+
+        if (Arrays.asList("AND", "OR", "NOT").contains(nomeToken)) {
+            return "Operador lógico";
+        }
+
+        if (Arrays.asList("EQ", "NE", "LT", "GT", "LE", "GE").contains(nomeToken)) {
+            return "Operador de Comparação";
+        }
+
+        if (Arrays.asList("LPAREN","RPAREN", "COMMA", "LBRACE", "RBRACE", "SEMICOLON", "LBRACKET", "RBRACKET").contains(nomeToken)) {
+            return "Símbolo especial: " ;
+        }
+        if(nomeToken.matches("EOF")){
+            return "Fim de arquivo";
+        }
+        return "Não identificado" + nomeToken;
+
+    }
+
     public List<DescSimbolo> ObterTabelaDeSimbolos() {
         List<DescSimbolo> listaSimbolos = new ArrayList<>();
         for (Token token : tokens.getTokens()) {
             String nomeToken = lexer.VOCABULARY.getSymbolicName(token.getType());
-            listaSimbolos.add(new DescSimbolo(nomeToken, token.getText(), token.getText()));
+            String tokenLexema = token.getText();
+            listaSimbolos.add(new DescSimbolo(nomeToken, tokenLexema, ObterCategoriaToken(nomeToken)));
         }
         return listaSimbolos;
     }

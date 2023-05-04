@@ -84,11 +84,18 @@ public class TelaMain extends javax.swing.JFrame {
         sp_Erros = new javax.swing.JScrollPane();
         tp_Erros = new javax.swing.JTextPane();
         sp_Arvore = new javax.swing.JScrollPane();
+        jButton1 = new javax.swing.JButton();
+        cb_TipoImagem = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         fileChooser.setFileFilter(new filtroCustomizado());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(879, 542));
+        setResizable(false);
         setSize(new java.awt.Dimension(879, 542));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -139,9 +146,11 @@ public class TelaMain extends javax.swing.JFrame {
         });
         getContentPane().add(bt_SelecionarArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, -1, -1));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Codigo Fonte:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 58, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Erros:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 327, -1, -1));
 
@@ -157,13 +166,31 @@ public class TelaMain extends javax.swing.JFrame {
                 bt_AnaliseLexicaMouseClicked(evt);
             }
         });
-        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 48, -1, -1));
+        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, -1, -1));
 
         tp_Erros.setEditable(false);
         sp_Erros.setViewportView(tp_Erros);
 
         getContentPane().add(sp_Erros, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 347, 380, 130));
-        getContentPane().add(sp_Arvore, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 80, 410, 400));
+        getContentPane().add(sp_Arvore, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 830, 340));
+
+        jButton1.setText("Salvar AST como Imagem");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, -1, -1));
+
+        cb_TipoImagem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SVG", "PNG" }));
+        getContentPane().add(cb_TipoImagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 500, -1, -1));
+
+        jLabel4.setText("Tipo de Imagem:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setText("Árvore de Análise Sintática ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setText("Tabela de Símbolos");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, -1, -1));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 873, 830, 10));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -248,11 +275,9 @@ public class TelaMain extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            // Configura o Look and Feel do sistema
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            // Caso ocorra algum erro ao configurar o Look and Feel, trate-o aqui
             java.util.logging.Logger.getLogger(TelaMain.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -271,10 +296,16 @@ public class TelaMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_AnaliseLexica;
     private javax.swing.JButton bt_SelecionarArquivo;
+    private javax.swing.JComboBox<String> cb_TipoImagem;
     private javax.swing.JFileChooser fileChooser;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JScrollPane sp_Arvore;
     private javax.swing.JScrollPane sp_CodigoFonte;
     private javax.swing.JScrollPane sp_Erros;
