@@ -20,8 +20,6 @@ public class TesteControlador {
         controlador.LerArquivo(arquivo);
         controlador.FazerAnalise();
         System.out.println("teste");
-        System.out.println(controlador.errosSintaticos.getErrosSintaticos());
-        System.out.println(controlador.errosLexicos.getErrosLexicos());
         
 
     }

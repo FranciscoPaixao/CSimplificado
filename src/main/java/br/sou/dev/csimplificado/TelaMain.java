@@ -184,6 +184,7 @@ public class TelaMain extends javax.swing.JFrame {
         CSimplificado();
         try {
             controlador.GerarImagemSVG();
+            controlador.GerarImagemPNG();
         } catch (IOException | TransformerException e) {
             
         }
