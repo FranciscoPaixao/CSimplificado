@@ -26,7 +26,8 @@ public class Controlador {
     public CSimplificadoLexer lexer;
     public CommonTokenStream tokens;
     private CSimplificadoParser parser;
-    public CSErrorListener errorListener;
+    public CSErrorListenerLexico errosLexicos;
+    public CSErrorListenerSintatico errosSintaticos;
 
     public Controlador() {
         this.caminhoArquivo = null;
@@ -34,7 +35,8 @@ public class Controlador {
         this.lexer = null;
         this.tokens = null;
         this.parser = null;
-        this.errorListener = new CSErrorListener();
+        this.errosLexicos = new CSErrorListenerLexico();
+        this.errosSintaticos = new CSErrorListenerSintatico();
     }
 
     public void LerArquivo(String caminhoArquivo) throws IOException {
@@ -53,8 +55,12 @@ public class Controlador {
 
         this.parser = new CSimplificadoParser(tokens);
 
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(errosLexicos);
+        
         parser.removeErrorListeners();
-        parser.addErrorListener(errorListener);
+        parser.addErrorListener(errosSintaticos);
+        
 
         ParseTree tree = parser.program();
     }
@@ -73,17 +79,19 @@ public class Controlador {
     }
 
   
-    public List<String> obterErrosLexicos() {
-        return errorListener.getSyntaxErrors();
+    public List<String> obterErrosSintaticos() {
+        return errosSintaticos.getErrosSintaticos();
     }
-
+    public List<String> obterErrosLexicos() {
+        return errosLexicos.getErrosLexicos();
+    }
     public String obterErrosTexto() {
         String erros = "";
-        for (String error : errorListener.getSyntaxErrors()) {
+        for (String error : errosSintaticos.getErrosSintaticos()) {
             erros = "Erro sintático: " + error;
         }
 
-        for (String error : errorListener.getLexicalErrors()) {
+        for (String error : errosLexicos.getErrosLexicos()) {
             erros = "Erro léxico: " + error;
         }
         return erros;
