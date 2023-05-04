@@ -4,4 +4,3 @@ int main() {
     int soma = x + y;
     prinln(soma);
     return 0; 
-}

@@ -6,16 +6,32 @@ package br.sou.dev.csimplificado;
 
 import br.sou.dev.classes.Controlador;
 import br.sou.dev.classes.DescSimbolo;
+import java.awt.Toolkit;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.Document;
+import javax.swing.text.StyledDocument;
+import javax.swing.undo.UndoManager;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.xml.transform.TransformerException;
 
 public class TelaMain extends javax.swing.JFrame {
 
-    Controlador controlador;
-    String caminhoArquivo;
+    public Controlador controlador;
+    public String caminhoArquivo;
 
     /**
      * Creates new form TelaTeste2
@@ -24,6 +40,25 @@ public class TelaMain extends javax.swing.JFrame {
         initComponents();
         caminhoArquivo = null;
         controlador = new Controlador();
+
+        tp_CodigoFonte.addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                controlador.AtualizarCodigoFonte(tp_CodigoFonte.getText());
+                controlador.FazerAnalise();
+                atualizarTelas();
+                System.out.println("Key released: " + e.getKeyChar());
+            }
+        });
+
     }
 
     /**
@@ -48,6 +83,7 @@ public class TelaMain extends javax.swing.JFrame {
         bt_AnaliseLexica = new javax.swing.JButton();
         sp_Erros = new javax.swing.JScrollPane();
         tp_Erros = new javax.swing.JTextPane();
+        sp_Arvore = new javax.swing.JScrollPane();
 
         fileChooser.setFileFilter(new filtroCustomizado());
 
@@ -86,15 +122,14 @@ public class TelaMain extends javax.swing.JFrame {
             tb_TabelaDeSimbolos.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        getContentPane().add(sp_Tabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, 430, 400));
+        getContentPane().add(sp_Tabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 77, 430, 400));
 
         sp_CodigoFonte.setToolTipText("");
 
-        tp_CodigoFonte.setEditable(false);
         tp_CodigoFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         sp_CodigoFonte.setViewportView(tp_CodigoFonte);
 
-        getContentPane().add(sp_CodigoFonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 380, 240));
+        getContentPane().add(sp_CodigoFonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 77, 380, 240));
 
         bt_SelecionarArquivo.setText("Selecionar arquivo");
         bt_SelecionarArquivo.addActionListener(new java.awt.event.ActionListener() {
@@ -105,10 +140,10 @@ public class TelaMain extends javax.swing.JFrame {
         getContentPane().add(bt_SelecionarArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, -1, -1));
 
         jLabel1.setText("Codigo Fonte:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 58, -1, -1));
 
         jLabel2.setText("Erros:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 327, -1, -1));
 
         tf_CaminhoArquivo.setEditable(false);
         getContentPane().add(tf_CaminhoArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 220, -1));
@@ -116,17 +151,19 @@ public class TelaMain extends javax.swing.JFrame {
         jLabel3.setText("Arquivo:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        bt_AnaliseLexica.setText("Iniciar Análise Léxica e Sintatica");
+        bt_AnaliseLexica.setText("Iniciar Análise Léxica e Sintática");
         bt_AnaliseLexica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bt_AnaliseLexicaMouseClicked(evt);
             }
         });
-        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, -1, -1));
+        getContentPane().add(bt_AnaliseLexica, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 48, -1, -1));
 
+        tp_Erros.setEditable(false);
         sp_Erros.setViewportView(tp_Erros);
 
-        getContentPane().add(sp_Erros, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, 380, 130));
+        getContentPane().add(sp_Erros, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 347, 380, 130));
+        getContentPane().add(sp_Arvore, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 80, 410, 400));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -143,17 +180,12 @@ public class TelaMain extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_SelecionarArquivoActionPerformed
 
     private void bt_AnaliseLexicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_AnaliseLexicaMouseClicked
-        if (this.caminhoArquivo != null) {
-            try {
-                controlador.LerArquivo(caminhoArquivo);
-            } catch (IOException ex) {
-                Logger.getLogger(TelaMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
-            controlador.FazerAnalise();
-            tp_CodigoFonte.setText(controlador.ObterCodigoFonte());
-            tp_Erros.setText(controlador.obterErrosTexto());
-            atualizarTabela();
+        CSimplificado();
+        try {
+            controlador.GerarImagemDaArvore();
+        } catch (IOException | TransformerException e) {
+            
         }
     }//GEN-LAST:event_bt_AnaliseLexicaMouseClicked
 
@@ -170,12 +202,39 @@ public class TelaMain extends javax.swing.JFrame {
         }
     }
 
-    public void atualizarTabela() {
+    public void CSimplificado() {
+        if (this.caminhoArquivo != null) {
+            try {
+                controlador.LerArquivo(caminhoArquivo);
+            } catch (IOException ex) {
+                Logger.getLogger(TelaMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            controlador.FazerAnalise();
+            tp_CodigoFonte.setText(controlador.ObterCodigoFonte());
+            atualizarTelas();
+        }
+    }
+
+    public void atualizarTelas() {
+        //Atualiza Tabela
         DefaultTableModel modelo = (DefaultTableModel) tb_TabelaDeSimbolos.getModel();
         modelo.setNumRows(0);
         for (DescSimbolo ds : controlador.ObterTabelaDeSimbolos()) {
             modelo.addRow(new Object[]{ds.lexema, ds.token, ds.descricao});
         }
+
+        //Atualiza Erros
+        StyledDocument doc = tp_Erros.getStyledDocument();
+        try {
+            doc.remove(0, doc.getLength());
+        } catch (BadLocationException ex) {
+        }
+        tp_Erros.setText(controlador.obterErrosTexto());
+
+        //Atualiza AST Viewer
+        sp_Arvore.setViewportView(controlador.ObterASTViewer());
+
     }
 
     /**
@@ -188,21 +247,15 @@ public class TelaMain extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // Configura o Look and Feel do sistema
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            // Caso ocorra algum erro ao configurar o Look and Feel, trate-o aqui
+            java.util.logging.Logger.getLogger(TelaMain.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+
         //</editor-fold>
         //</editor-fold>
 
@@ -221,6 +274,7 @@ public class TelaMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane sp_Arvore;
     private javax.swing.JScrollPane sp_CodigoFonte;
     private javax.swing.JScrollPane sp_Erros;
     private javax.swing.JScrollPane sp_Tabela;
