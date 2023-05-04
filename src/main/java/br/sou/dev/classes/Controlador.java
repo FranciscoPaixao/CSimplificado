@@ -9,7 +9,6 @@ import br.dev.sou.classes.CSimplificadoParser;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -174,7 +173,7 @@ public class Controlador {
             return "Constante de texto";
         }
 
-        if (Arrays.asList("IF", "ELSE", "WHILE", "RETURN", "CHAR", "FLOAT", "INT", "BOOLEAN", "MAIN", "VOID", "FOR", "SCANF", "PRINTLN").contains(nomeToken)) {
+        if (Arrays.asList("IF", "ELSE", "WHILE", "RETURN", "CHAR", "FLOAT", "INT", "BOOLEAN", "MAIN", "VOID", "FOR", "SCANF", "PRINTLN", "FUNC").contains(nomeToken)) {
             return "Palavra reservada";
         }
 

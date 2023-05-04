@@ -6,25 +6,16 @@ package br.sou.dev.csimplificado;
 
 import br.sou.dev.classes.Controlador;
 import br.sou.dev.classes.DescSimbolo;
-import java.awt.Toolkit;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.Document;
 import javax.swing.text.StyledDocument;
-import javax.swing.undo.UndoManager;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.xml.transform.TransformerException;
 
