@@ -34,16 +34,18 @@ import org.w3c.dom.Document;
 public class Controlador {
 
     private CharStream codigoFonte;
-    private String caminhoArquivo;
-    public CSimplificadoLexer lexer;
-    public CommonTokenStream tokens;
+    private String caminhoCodigoFonte;
+    private String pastaCodigoFonte;
+    private CSimplificadoLexer lexer;
+    private CommonTokenStream tokens;
     private CSimplificadoParser parser;
-    public CSErrorListenerLexico errosLexicos;
-    public CSErrorListenerSintatico errosSintaticos;
-    public ParseTree tree;
+    private CSErrorListenerLexico errosLexicos;
+    private CSErrorListenerSintatico errosSintaticos;
+    private ParseTree tree;
 
     public Controlador() {
-        this.caminhoArquivo = null;
+        this.caminhoCodigoFonte = "";
+        this.pastaCodigoFonte = "";
         this.codigoFonte = null;
         this.lexer = null;
         this.tokens = null;
@@ -51,13 +53,16 @@ public class Controlador {
         this.tree = null;
     }
 
-    public void LerArquivo(String caminhoArquivo) throws IOException {
-        this.caminhoArquivo = caminhoArquivo;
-        codigoFonte = CharStreams.fromFileName(caminhoArquivo);
+    public void LerArquivo(String caminhoCodigoFonte) throws IOException {
+        this.caminhoCodigoFonte = caminhoCodigoFonte;
+        File file = new File(caminhoCodigoFonte);
+        this.pastaCodigoFonte = file.getParent();
+        pastaCodigoFonte = file.getParent();
+        codigoFonte = CharStreams.fromFileName(caminhoCodigoFonte);
     }
 
     public void AtualizarArquivo() throws IOException {
-        LerArquivo(caminhoArquivo);
+        LerArquivo(caminhoCodigoFonte);
     }
 
     public void AtualizarArquivo(String texto) {
@@ -97,9 +102,8 @@ public class Controlador {
         return viewer;
     }
 
-    public void GerarImagemDaArvore() throws IOException, TransformerException {
-        TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
-        viewer.setScale(1.0);
+    public void GerarImagemPNG() throws IOException, TransformerException {
+        TreeViewer viewer = ObterASTViewer();
 
         //Font font = new Font("Monospaced", Font.PLAIN, 12);
         //viewer.setFont(font);
@@ -110,7 +114,7 @@ public class Controlador {
         Graphics2D g2d = image.createGraphics();
         viewer.paint(g2d);
 
-        File file = new File("tree.png");
+        File file = new File("arvore.png");
         try {
             ImageIO.write(image, "png", file);
         } catch (IOException ex) {
@@ -119,11 +123,7 @@ public class Controlador {
     }
 
     public void GerarImagemSVG() throws IOException, TransformerException {
-        TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
-        viewer.setScale(1.0);
-
-        int width = viewer.getPreferredSize().width;
-        int height = viewer.getPreferredSize().height;
+        TreeViewer viewer = ObterASTViewer();
 
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
         Document document = domImpl.createDocument(null, "svg", null);
