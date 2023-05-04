@@ -6,10 +6,10 @@ package br.sou.dev.classes;
 
 import br.dev.sou.classes.CSimplificadoLexer;
 import br.dev.sou.classes.CSimplificadoParser;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +22,10 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -89,34 +93,46 @@ public class Controlador {
 
     public TreeViewer ObterASTViewer() {
         TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
-        viewer.setScale(1);
+        viewer.setScale(1.0);
         return viewer;
     }
 
     public void GerarImagemDaArvore() throws IOException, TransformerException {
-        TreeViewer viewer = new TreeViewer(null, tree);
-        Font font = new Font("Monospaced", Font.PLAIN, 12);
-        viewer.setFont(font);
-        // Obtém as dimensões do TreeViewer
+        TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
+        viewer.setScale(1.0);
+
+        //Font font = new Font("Monospaced", Font.PLAIN, 12);
+        //viewer.setFont(font);
         int width = viewer.getPreferredSize().width;
         int height = viewer.getPreferredSize().height;
 
-        // Cria um BufferedImage do tamanho necessário
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-        // Cria um Graphics2D a partir do BufferedImage
         Graphics2D g2d = image.createGraphics();
-
-        // Desenha a árvore no Graphics2D
         viewer.paint(g2d);
 
-        // Salva o BufferedImage como um arquivo PNG
         File file = new File("tree.png");
         try {
             ImageIO.write(image, "png", file);
         } catch (IOException ex) {
 
         }
+    }
+
+    public void GerarImagemSVG() throws IOException, TransformerException {
+        TreeViewer viewer = new TreeViewer(Arrays.asList(parser.getRuleNames()), tree);
+        viewer.setScale(1.0);
+
+        int width = viewer.getPreferredSize().width;
+        int height = viewer.getPreferredSize().height;
+
+        DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+        Document document = domImpl.createDocument(null, "svg", null);
+        SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+
+        viewer.paint(svgGenerator);
+        String outputFile = "arvore.svg";
+        svgGenerator.stream(outputFile, true);
+
     }
 
     public List<String> obterErrosSintaticos() {

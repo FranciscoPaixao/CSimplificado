@@ -183,7 +183,7 @@ public class TelaMain extends javax.swing.JFrame {
 
         CSimplificado();
         try {
-            controlador.GerarImagemDaArvore();
+            controlador.GerarImagemSVG();
         } catch (IOException | TransformerException e) {
             
         }

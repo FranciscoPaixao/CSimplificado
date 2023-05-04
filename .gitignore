@@ -6,3 +6,5 @@ dependency-reduced-pom.xml
 .antlr/CSimplificadoLexer.interp
 *.tokens
 *.interp
+*.png
+*.svg
