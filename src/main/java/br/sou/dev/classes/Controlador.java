@@ -36,6 +36,7 @@ public class Controlador {
     private CharStream codigoFonte;
     private String caminhoCodigoFonte;
     private String pastaCodigoFonte;
+    private String nomeCodigoFonte;
     private CSimplificadoLexer lexer;
     private CommonTokenStream tokens;
     private CSimplificadoParser parser;
@@ -46,6 +47,7 @@ public class Controlador {
     public Controlador() {
         this.caminhoCodigoFonte = "";
         this.pastaCodigoFonte = "";
+        this.nomeCodigoFonte = "";
         this.codigoFonte = null;
         this.lexer = null;
         this.tokens = null;
@@ -57,6 +59,7 @@ public class Controlador {
         this.caminhoCodigoFonte = caminhoCodigoFonte;
         File file = new File(caminhoCodigoFonte);
         this.pastaCodigoFonte = file.getParent();
+        this.nomeCodigoFonte = file.getName();
         pastaCodigoFonte = file.getParent();
         codigoFonte = CharStreams.fromFileName(caminhoCodigoFonte);
     }
@@ -114,7 +117,7 @@ public class Controlador {
         Graphics2D g2d = image.createGraphics();
         viewer.paint(g2d);
 
-        File file = new File("arvore.png");
+        File file = new File("arvore-" + this.nomeCodigoFonte + ".png");
         try {
             ImageIO.write(image, "png", file);
         } catch (IOException ex) {
@@ -130,7 +133,7 @@ public class Controlador {
         SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
 
         viewer.paint(svgGenerator);
-        String outputFile = "arvore.svg";
+        String outputFile = "arvore-" + this.nomeCodigoFonte + ".svg";
         svgGenerator.stream(outputFile, true);
 
     }
