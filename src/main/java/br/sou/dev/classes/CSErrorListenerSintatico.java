@@ -15,7 +15,7 @@ public class CSErrorListenerSintatico extends BaseErrorListener {
             int line, int charPositionInLine,
             String msg,
             RecognitionException e) {
-        erros.add("Erro sintático [" + line + "," + charPositionInLine + "] " + msg);
+        erros.add("Erro sintático [" + line + "," + charPositionInLine + "]: " + msg);
     }
 
     public List<String> getErrosSintaticos() {

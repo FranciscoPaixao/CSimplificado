@@ -149,11 +149,11 @@ public class Controlador {
     public String obterErrosTexto() {
         String erros = "";
         for (String error : errosSintaticos.getErrosSintaticos()) {
-            erros += "Erro sintático: " + error + "\n";
+            erros += error + "\n";
         }
 
         for (String error : errosLexicos.getErrosLexicos()) {
-            erros += "Erro léxico: " + error + "\n";
+            erros += error + "\n";
         }
         return erros;
     }
@@ -195,7 +195,7 @@ public class Controlador {
         }
 
         if (Arrays.asList("LPAREN","RPAREN", "COMMA", "LBRACE", "RBRACE", "SEMICOLON", "LBRACKET", "RBRACKET").contains(nomeToken)) {
-            return "Símbolo especial: " ;
+            return "Símbolo especial" ;
         }
         if(nomeToken.matches("EOF")){
             return "Fim de arquivo";

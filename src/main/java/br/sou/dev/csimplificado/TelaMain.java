@@ -55,7 +55,7 @@ public class TelaMain extends javax.swing.JFrame {
                 controlador.AtualizarCodigoFonte(tp_CodigoFonte.getText());
                 controlador.FazerAnalise();
                 atualizarTelas();
-                System.out.println("Key released: " + e.getKeyChar());
+                //System.out.println("Key released: " + e.getKeyChar());
             }
         });
 
@@ -175,6 +175,11 @@ public class TelaMain extends javax.swing.JFrame {
         getContentPane().add(sp_Arvore, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 830, 340));
 
         jButton1.setText("Salvar AST como Imagem");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 500, -1, -1));
 
         cb_TipoImagem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SVG", "PNG" }));
@@ -209,13 +214,20 @@ public class TelaMain extends javax.swing.JFrame {
     private void bt_AnaliseLexicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_AnaliseLexicaMouseClicked
 
         CSimplificado();
-        try {
-            controlador.GerarImagemSVG();
-            controlador.GerarImagemPNG();
-        } catch (IOException | TransformerException e) {
-            
-        }
     }//GEN-LAST:event_bt_AnaliseLexicaMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        try {
+            if (cb_TipoImagem.getSelectedItem().toString().equals("SVG")) {
+                controlador.GerarImagemSVG();
+            } else {
+                controlador.GerarImagemPNG();
+            }
+        } catch (IOException | TransformerException e) {
+
+        }
+        //System.out.println(cb_TipoImagem.getSelectedItem().toString());
+    }//GEN-LAST:event_jButton1MouseClicked
 
     class filtroCustomizado extends javax.swing.filechooser.FileFilter {
 
