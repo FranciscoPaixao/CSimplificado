@@ -123,7 +123,7 @@ public class Controlador {
 
         }
     }
-
+    // Obs: Salva o arquivo na pasta do projeto
     public void GerarImagemSVG() throws IOException, TransformerException {
         TreeViewer viewer = ObterASTViewer();
 
@@ -170,7 +170,7 @@ public class Controlador {
         }
 
         if (nomeToken.matches("TEXTO")) {
-            return "Constante de texto";
+            return "Texto";
         }
 
         if (Arrays.asList("IF", "ELSE", "WHILE", "RETURN", "CHAR", "FLOAT", "INT", "BOOLEAN", "MAIN", "VOID", "FOR", "SCANF", "PRINTLN", "FUNC").contains(nomeToken)) {
