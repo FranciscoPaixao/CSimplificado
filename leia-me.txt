@@ -1,1 +1,1 @@
-A gramática  está na pasta \src\main\antlr4
+A gramática está na pasta \src\main\antlr4
