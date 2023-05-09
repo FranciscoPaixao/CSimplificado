@@ -8,3 +8,4 @@ dependency-reduced-pom.xml
 *.interp
 *.png
 *.svg
+/src/main/antlr4/.antlr
