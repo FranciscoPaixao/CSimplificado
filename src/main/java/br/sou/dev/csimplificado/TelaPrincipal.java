@@ -19,7 +19,7 @@ import javax.swing.text.StyledDocument;
 import java.awt.event.KeyEvent;
 import javax.xml.transform.TransformerException;
 
-public class TelaMain extends javax.swing.JFrame {
+public class TelaPrincipal extends javax.swing.JFrame {
 
     public Controlador controlador;
     public String caminhoArquivo;
@@ -27,7 +27,7 @@ public class TelaMain extends javax.swing.JFrame {
     /**
      * Creates new form TelaTeste2
      */
-    public TelaMain() {
+    public TelaPrincipal() {
         initComponents();
         caminhoArquivo = null;
         controlador = new Controlador();
@@ -260,7 +260,7 @@ public class TelaMain extends javax.swing.JFrame {
             try {
                 controlador.LerArquivo(caminhoArquivo);
             } catch (IOException ex) {
-                Logger.getLogger(TelaMain.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             controlador.FazerAnalise();
@@ -293,30 +293,6 @@ public class TelaMain extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaMain.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaMain().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_AnaliseLexica;

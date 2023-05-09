@@ -28,7 +28,7 @@ import org.w3c.dom.Document;
 
 /**
  *
- * @author Francisco
+ * @author Francisco e Evelise
  */
 public class Controlador {
 

@@ -1,6 +1,12 @@
-int main() {
-    int x = 5;
-    int y = 10;
-    int soma = x + y;
-    prinln(soma);
-    return 0; 
+int soma(int a, int b)
+{
+    return a + b;
+}
+main()
+{
+    int x, y, z;
+    x = 2;
+    scanf(y);
+    z = func soma(x, y);
+    println(z);
+}
