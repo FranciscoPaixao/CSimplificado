@@ -95,7 +95,7 @@ fator:
 	| LPAREN expressao RPAREN;
 termo: ID dimensao2 | constante;
 
-constante: NUM_INT | NUM_DEC | TRUE | FALSE | TEXTO;
+constante: NUM_INT | NUM_DEC | TRUE | FALSE;
 
 CHAR: 'char';
 FLOAT: 'float';
