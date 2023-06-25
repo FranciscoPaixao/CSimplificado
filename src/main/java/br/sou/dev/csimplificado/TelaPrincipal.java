@@ -82,6 +82,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
+        fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\Francisco\\Documents\\GitHub\\CSimplificado"));
         fileChooser.setFileFilter(new filtroCustomizado());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);

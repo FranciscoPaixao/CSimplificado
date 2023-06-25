@@ -4,8 +4,8 @@
  */
 package br.sou.dev.classes;
 
-import br.dev.sou.classes.CSimplificadoLexer;
-import br.dev.sou.classes.CSimplificadoParser;
+import antlr.CSimplificadoLexer;
+import antlr.CSimplificadoParser;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,6 +21,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.w3c.dom.DOMImplementation;
@@ -41,6 +42,7 @@ public class Controlador {
     private CSimplificadoParser parser;
     private CSErrorListenerLexico errosLexicos;
     private CSErrorListenerSintatico errosSintaticos;
+    private CSErrorListenerSemantico errosSemanticos;
     private ParseTree tree;
 
     public Controlador() {
@@ -80,6 +82,7 @@ public class Controlador {
 
         this.errosLexicos = new CSErrorListenerLexico();
         this.errosSintaticos = new CSErrorListenerSintatico();
+        this.errosSemanticos = new CSErrorListenerSemantico(lexer);
 
         lexer.removeErrorListeners();
         lexer.addErrorListener(errosLexicos);
@@ -88,6 +91,9 @@ public class Controlador {
         parser.addErrorListener(errosSintaticos);
 
         this.tree = parser.program();
+
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(errosSemanticos, tree);
     }
 
     public String ObterCodigoFonte() {
@@ -123,6 +129,7 @@ public class Controlador {
 
         }
     }
+
     // Obs: Salva o arquivo na pasta do projeto
     public void GerarImagemSVG() throws IOException, TransformerException {
         TreeViewer viewer = ObterASTViewer();
@@ -145,8 +152,16 @@ public class Controlador {
         return errosLexicos.getErrosLexicos();
     }
 
+    public List<String> obterErrosSemanticos() {
+        return errosSemanticos.getErrosSemanticos();
+    }
+
     public String obterErrosTexto() {
         String erros = "";
+        for (String error : errosSemanticos.getErrosSemanticos()) {
+            erros += error + "\n";
+        }
+        
         for (String error : errosSintaticos.getErrosSintaticos()) {
             erros += error + "\n";
         }
@@ -158,7 +173,7 @@ public class Controlador {
     }
 
     public String ObterCategoriaToken(String nomeToken) {
-        if(nomeToken.matches("NUM_INT")){
+        if (nomeToken.matches("NUM_INT")) {
             return "Número inteiro";
         }
         if (nomeToken.matches("NUM_DEC")) {
@@ -193,10 +208,10 @@ public class Controlador {
             return "Operador de Comparação";
         }
 
-        if (Arrays.asList("LPAREN","RPAREN", "COMMA", "LBRACE", "RBRACE", "SEMICOLON", "LBRACKET", "RBRACKET").contains(nomeToken)) {
-            return "Símbolo especial" ;
+        if (Arrays.asList("LPAREN", "RPAREN", "COMMA", "LBRACE", "RBRACE", "SEMICOLON", "LBRACKET", "RBRACKET").contains(nomeToken)) {
+            return "Símbolo especial";
         }
-        if(nomeToken.matches("EOF")){
+        if (nomeToken.matches("EOF")) {
             return "Fim de arquivo";
         }
         return "Não identificado" + nomeToken;

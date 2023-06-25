@@ -65,7 +65,7 @@
                         </goals>
                         <configuration>
                             <sourceDirectory>${project.basedir}/src/main/antlr4</sourceDirectory>
-                            <outputDirectory>${project.basedir}/target/generated-sources/antlr4/br/dev/sou/classes</outputDirectory>
+                            <outputDirectory>${project.basedir}/src/main/java/antlr</outputDirectory>
                             <language>Java</language>
                             <listener>true</listener>
                             <visitor>true</visitor>

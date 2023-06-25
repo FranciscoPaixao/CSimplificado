@@ -1,12 +1,7 @@
-int soma(int a, int b)
-{
-    return a + b;
+boolean soma(){
+    return 1 > 2;
 }
 main()
 {
-    int x, y, z;
-    x = 2;
-    scanf(y);
-    z = func soma(x, y);
-    println(z);
+ int x, y;
 }

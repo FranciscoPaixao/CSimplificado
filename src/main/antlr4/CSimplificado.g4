@@ -1,6 +1,6 @@
 grammar CSimplificado;
 @header {
-    package br.dev.sou.classes;
+    package antlr;
 }
 program: listaFuncoes principal EOF;
 
@@ -97,17 +97,19 @@ expressao_multiplicativa2: (MUL | DIV | MOD) fator expressao_multiplicativa2
 
 fator:
 	(ADD | SUB)? termo
-	| TEXTO
+//	| TEXTO
 	| NOT fator
 	| LPAREN expressao RPAREN;
 termo: ID dimensao2 | constante;
 
-constante: NUM_INT | NUM_DEC;
+constante: NUM_INT | NUM_DEC | TRUE | FALSE | TEXTO;
 
 CHAR: 'char';
 FLOAT: 'float';
 INT: 'int';
 BOOLEAN: 'boolean';
+TRUE: 'true';
+FALSE: 'false';
 VOID: 'void';
 MAIN: 'main';
 FUNC: 'func';
@@ -140,10 +142,12 @@ LBRACKET: '[';
 RBRACKET: ']';
 LBRACE: '{';
 RBRACE: '}';
+TEXTO: '"' (ESC|.)*? '"';
+fragment ESC : '\\"';
 ID: [a-zA-Z_][a-zA-Z0-9_]*;
 NUM_INT: [0-9]+;
 NUM_DEC: [0-9]+ '.' [0-9]+;
-TEXTO: '\'' ~('\'' | '\\') '\'';
+
 
 WS: [ \t\r\n]+ -> skip;
 COMENTARIO: '/*' .*? '*/' -> skip;
