@@ -7,12 +7,13 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.bytedeco/llvm -->
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/llvm-platform -->
         <dependency>
             <groupId>org.bytedeco</groupId>
-            <artifactId>llvm</artifactId>
+            <artifactId>llvm-platform</artifactId>
             <version>16.0.4-1.5.9</version>
         </dependency>
+
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacpp</artifactId>
