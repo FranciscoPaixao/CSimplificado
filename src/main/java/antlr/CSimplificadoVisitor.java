@@ -1,4 +1,4 @@
-// Generated from CSimplificado.g4 by ANTLR 4.12.0
+// Generated from CSimplificado.g4 by ANTLR 4.13.0
 
     package antlr;
 
@@ -211,23 +211,11 @@ public interface CSimplificadoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpressao_OU(CSimplificadoParser.Expressao_OUContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CSimplificadoParser#expressao_OU2}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpressao_OU2(CSimplificadoParser.Expressao_OU2Context ctx);
-	/**
 	 * Visit a parse tree produced by {@link CSimplificadoParser#expressao_E}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExpressao_E(CSimplificadoParser.Expressao_EContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CSimplificadoParser#expressao_E2}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpressao_E2(CSimplificadoParser.Expressao_E2Context ctx);
 	/**
 	 * Visit a parse tree produced by {@link CSimplificadoParser#expressao_atribuicao}.
 	 * @param ctx the parse tree
@@ -253,23 +241,11 @@ public interface CSimplificadoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpressao_aditiva(CSimplificadoParser.Expressao_aditivaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CSimplificadoParser#expressao_aditiva2}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpressao_aditiva2(CSimplificadoParser.Expressao_aditiva2Context ctx);
-	/**
 	 * Visit a parse tree produced by {@link CSimplificadoParser#expressao_multiplicativa}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExpressao_multiplicativa(CSimplificadoParser.Expressao_multiplicativaContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CSimplificadoParser#expressao_multiplicativa2}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpressao_multiplicativa2(CSimplificadoParser.Expressao_multiplicativa2Context ctx);
 	/**
 	 * Visit a parse tree produced by {@link CSimplificadoParser#fator}.
 	 * @param ctx the parse tree

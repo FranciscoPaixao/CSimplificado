@@ -1,4 +1,4 @@
-// Generated from CSimplificado.g4 by ANTLR 4.12.0
+// Generated from CSimplificado.g4 by ANTLR 4.13.0
 
     package antlr;
 
@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class CSimplificadoLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.12.0", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.0", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =

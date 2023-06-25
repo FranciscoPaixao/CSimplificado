@@ -1,4 +1,4 @@
-// Generated from CSimplificado.g4 by ANTLR 4.12.0
+// Generated from CSimplificado.g4 by ANTLR 4.13.0
 
     package antlr;
 
@@ -415,18 +415,6 @@ public class CSimplificadoBaseListener implements CSimplificadoListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpressao_OU2(CSimplificadoParser.Expressao_OU2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpressao_OU2(CSimplificadoParser.Expressao_OU2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExpressao_E(CSimplificadoParser.Expressao_EContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -434,18 +422,6 @@ public class CSimplificadoBaseListener implements CSimplificadoListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpressao_E(CSimplificadoParser.Expressao_EContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpressao_E2(CSimplificadoParser.Expressao_E2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpressao_E2(CSimplificadoParser.Expressao_E2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -499,18 +475,6 @@ public class CSimplificadoBaseListener implements CSimplificadoListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpressao_aditiva2(CSimplificadoParser.Expressao_aditiva2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpressao_aditiva2(CSimplificadoParser.Expressao_aditiva2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExpressao_multiplicativa(CSimplificadoParser.Expressao_multiplicativaContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -518,18 +482,6 @@ public class CSimplificadoBaseListener implements CSimplificadoListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpressao_multiplicativa(CSimplificadoParser.Expressao_multiplicativaContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterExpressao_multiplicativa2(CSimplificadoParser.Expressao_multiplicativa2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpressao_multiplicativa2(CSimplificadoParser.Expressao_multiplicativa2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

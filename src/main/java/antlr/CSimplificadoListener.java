@@ -1,4 +1,4 @@
-// Generated from CSimplificado.g4 by ANTLR 4.12.0
+// Generated from CSimplificado.g4 by ANTLR 4.13.0
 
     package antlr;
 
@@ -340,16 +340,6 @@ public interface CSimplificadoListener extends ParseTreeListener {
 	 */
 	void exitExpressao_OU(CSimplificadoParser.Expressao_OUContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CSimplificadoParser#expressao_OU2}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressao_OU2(CSimplificadoParser.Expressao_OU2Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link CSimplificadoParser#expressao_OU2}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressao_OU2(CSimplificadoParser.Expressao_OU2Context ctx);
-	/**
 	 * Enter a parse tree produced by {@link CSimplificadoParser#expressao_E}.
 	 * @param ctx the parse tree
 	 */
@@ -359,16 +349,6 @@ public interface CSimplificadoListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpressao_E(CSimplificadoParser.Expressao_EContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CSimplificadoParser#expressao_E2}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressao_E2(CSimplificadoParser.Expressao_E2Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link CSimplificadoParser#expressao_E2}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressao_E2(CSimplificadoParser.Expressao_E2Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link CSimplificadoParser#expressao_atribuicao}.
 	 * @param ctx the parse tree
@@ -410,16 +390,6 @@ public interface CSimplificadoListener extends ParseTreeListener {
 	 */
 	void exitExpressao_aditiva(CSimplificadoParser.Expressao_aditivaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CSimplificadoParser#expressao_aditiva2}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressao_aditiva2(CSimplificadoParser.Expressao_aditiva2Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link CSimplificadoParser#expressao_aditiva2}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressao_aditiva2(CSimplificadoParser.Expressao_aditiva2Context ctx);
-	/**
 	 * Enter a parse tree produced by {@link CSimplificadoParser#expressao_multiplicativa}.
 	 * @param ctx the parse tree
 	 */
@@ -429,16 +399,6 @@ public interface CSimplificadoListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpressao_multiplicativa(CSimplificadoParser.Expressao_multiplicativaContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CSimplificadoParser#expressao_multiplicativa2}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressao_multiplicativa2(CSimplificadoParser.Expressao_multiplicativa2Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link CSimplificadoParser#expressao_multiplicativa2}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressao_multiplicativa2(CSimplificadoParser.Expressao_multiplicativa2Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link CSimplificadoParser#fator}.
 	 * @param ctx the parse tree

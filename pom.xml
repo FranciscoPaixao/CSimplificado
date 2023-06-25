@@ -7,21 +7,26 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.antlr/stringtemplate -->
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/llvm -->
         <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>ST4</artifactId>
-            <version>4.3.4</version>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>llvm</artifactId>
+            <version>16.0.4-1.5.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacpp</artifactId>
+            <version>1.5.9</version>
         </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
-            <version>4.12.0</version>
+            <version>4.13.0</version>
         </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
-            <version>4.12.0</version>
+            <version>4.13.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
@@ -38,18 +43,10 @@
             <artifactId>batik-dom</artifactId>
             <version>1.16</version>
         </dependency>
-
-        <!-- 
-<dependency>
-    <groupId>org.bytedeco</groupId>
-    <artifactId>llvm-platform</artifactId>
-    <version>15.0.3-1.5.8</version>
-</dependency>
-        !-->
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
-            <version>RELEASE170</version>
+            <version>RELEASE180</version>
         </dependency>
     </dependencies>
     <build>
@@ -57,7 +54,7 @@
             <plugin>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
-                <version>4.12.0</version>
+                <version>4.13.0</version>
                 <executions>
                     <execution>
                         <goals>

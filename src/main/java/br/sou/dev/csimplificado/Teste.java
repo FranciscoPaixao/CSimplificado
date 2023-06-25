@@ -25,7 +25,12 @@ public class Teste {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        CharStream codigoFonte = CharStreams.fromFileName("teste.c");
+        String codigo = "main()\n" +
+                "{\n" +
+                " char[10] x;\n" +
+                " x = \"abc\";\n" +
+                "}\n";
+        CharStream codigoFonte = CharStreams.fromString(codigo);
         
         CSimplificadoLexer lexer = new CSimplificadoLexer(codigoFonte);
 
@@ -51,10 +56,14 @@ public class Teste {
             System.out.println(erro);
         }
 
-        String GeradorLLVMIR = new CSGeradorIRVisitor().visit(tree);
-        System.out.println(GeradorLLVMIR);
-        CSGeradorIRListener geradorIR = new CSGeradorIRListener();
+        //String GeradorLLVMIR = new CSGeradorIRVisitor().visit(tree);
+        //System.out.println(GeradorLLVMIR);
+        //CSGeradorIRListener geradorIR = new CSGeradorIRListener();
         //walker.walk(geradorIR, tree);
+        CSLLVMBuilderVisitor GeradorLLVMIR = new CSLLVMBuilderVisitor();
+        GeradorLLVMIR.visit(tree);
+        System.out.println(GeradorLLVMIR.ObterIR());
+
     }
     
 }

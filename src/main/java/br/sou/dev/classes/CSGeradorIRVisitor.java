@@ -8,6 +8,7 @@ import antlr.CSimplificadoBaseVisitor;
 import antlr.CSimplificadoParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+
 import java.util.HashMap;
 
 /**
@@ -137,11 +138,26 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
         return codigoIR;
     }
     @Override
-    public String visitExpressao_OU2(CSimplificadoParser.Expressao_OU2Context ctx) {
+    public String visitExpressao_relacional(CSimplificadoParser.Expressao_relacionalContext ctx) {
         if(ctx == null){
             return "";
         }
-        String codigoIR = "or";
-        return codigoIR;
+        //LLVMValueRef expr1 = visit(ctx.getChild(0));
+        //LLVMValueRef expr2 = visit(ctx.getChild(2));
+
+        //System.out.println(visit(ctx.getChild(2)));
+
+
+
+
+        return "";
+
+    }
+    @Override
+    public String visitConstante(CSimplificadoParser.ConstanteContext ctx) {
+        if(ctx == null){
+            return "";
+        }
+        return ctx.getStart().getText();
     }
 }
