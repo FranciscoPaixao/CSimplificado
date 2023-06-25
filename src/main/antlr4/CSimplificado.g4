@@ -71,33 +71,26 @@ listaArgumentos: COMMA expressao listaArgumentos |;
 
 retorno: RETURN expressao SEMICOLON;
 
-expressao: expressao_OU;
-expressao_OU: expressao_E expressao_OU2;
-expressao_OU2: OR expressao_E expressao_OU2 |;
-expressao_E: expressao_atribuicao expressao_E2;
-expressao_E2: AND expressao_atribuicao expressao_E2 |;
+expressao:
+    expressao_OU;
+expressao_OU:
+    expressao_E (OR expressao_E)*;
+expressao_E:
+    expressao_atribuicao (AND expressao_atribuicao)*;
 expressao_atribuicao:
-	expressao_igualdade (ASSIGN expressao_igualdade)?;
+    expressao_igualdade (ASSIGN expressao_igualdade)*;
 
 expressao_igualdade:
 	expressao_relacional ((EQ | NE) expressao_relacional)*;
-
 expressao_relacional:
 	expressao_aditiva ((LT | GT | LE | GE) expressao_aditiva)*;
-
-expressao_aditiva: expressao_multiplicativa expressao_aditiva2;
-
-expressao_aditiva2: (ADD | SUB) expressao_multiplicativa expressao_aditiva2
-	|;
-
-expressao_multiplicativa: fator expressao_multiplicativa2;
-
-expressao_multiplicativa2: (MUL | DIV | MOD) fator expressao_multiplicativa2
-	|;
+expressao_aditiva:
+    expressao_multiplicativa ((ADD | SUB) expressao_multiplicativa)*;
+expressao_multiplicativa: fator ((MUL | DIV | MOD) fator)*;
 
 fator:
 	(ADD | SUB)? termo
-//	| TEXTO
+	| TEXTO
 	| NOT fator
 	| LPAREN expressao RPAREN;
 termo: ID dimensao2 | constante;
