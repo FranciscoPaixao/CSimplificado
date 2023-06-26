@@ -53,30 +53,19 @@ public class Teste {
 
         ParseTree tree = parser.program();
         
-        CSErrorListenerSemantico errosSemanticos = new CSErrorListenerSemantico(lexer);
         ParseTreeWalker walker = new ParseTreeWalker();
+        
+        CSErrorListenerSemantico errosSemanticos = new CSErrorListenerSemantico(lexer);
+        
         //walker.walk(errosSemanticos, tree);
         for(String erro : errosSemanticos.getErrosSemanticos()){
             System.out.println(erro);
         }
 
-        //String GeradorLLVMIR = new CSGeradorIRVisitor().visit(tree);
-        //System.out.println(GeradorLLVMIR);
-        //CSGeradorIRListener geradorIR = new CSGeradorIRListener();
-        //walker.walk(geradorIR, tree);
-        CSLLVMBuilderVisitor GeradorLLVMIR = new CSLLVMBuilderVisitor();
-        BytePointer error = new BytePointer((Pointer) null); // Used to retrieve messages from functions
-        LLVMVerifyModule(GeradorLLVMIR.getModule(), LLVMAbortProcessAction, error);
-        LLVMDisposeMessage(error);
-
-        BytePointer output = LLVMPrintModuleToString(GeradorLLVMIR.getModule());
-        System.out.println(output.getString());
-        LLVMDisposeMessage(output);
-
-        // Clean up. Valgrind will be proud.
-        LLVMDisposeBuilder(GeradorLLVMIR.getBuilder());
-        LLVMDisposeModule(GeradorLLVMIR.getModule());
-
+        String GeradorLLVMIR = new CSGeradorIRVisitor().visit(tree);
+        System.out.println(GeradorLLVMIR);
+        CSGeradorIRListener geradorIR = new CSGeradorIRListener();
+        walker.walk(geradorIR, tree);
     }
     
 }
