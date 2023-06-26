@@ -14,6 +14,14 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.Pointer;
+import static org.bytedeco.llvm.global.LLVM.LLVMAbortProcessAction;
+import static org.bytedeco.llvm.global.LLVM.LLVMDisposeBuilder;
+import static org.bytedeco.llvm.global.LLVM.LLVMDisposeMessage;
+import static org.bytedeco.llvm.global.LLVM.LLVMDisposeModule;
+import static org.bytedeco.llvm.global.LLVM.LLVMPrintModuleToString;
+import static org.bytedeco.llvm.global.LLVM.LLVMVerifyModule;
 
 /**
  *
@@ -25,11 +33,7 @@ public class Teste {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        String codigo = "main()\n" +
-                "{\n" +
-                " char[10] x;\n" +
-                " x = \"abc\";\n" +
-                "}\n";
+        String codigo = "main() {} ";
         CharStream codigoFonte = CharStreams.fromString(codigo);
         
         CSimplificadoLexer lexer = new CSimplificadoLexer(codigoFonte);
@@ -61,8 +65,17 @@ public class Teste {
         //CSGeradorIRListener geradorIR = new CSGeradorIRListener();
         //walker.walk(geradorIR, tree);
         CSLLVMBuilderVisitor GeradorLLVMIR = new CSLLVMBuilderVisitor();
-        GeradorLLVMIR.visit(tree);
-        System.out.println(GeradorLLVMIR.ObterIR());
+        BytePointer error = new BytePointer((Pointer) null); // Used to retrieve messages from functions
+        LLVMVerifyModule(GeradorLLVMIR.getModule(), LLVMAbortProcessAction, error);
+        LLVMDisposeMessage(error);
+
+        BytePointer output = LLVMPrintModuleToString(GeradorLLVMIR.getModule());
+        System.out.println(output.getString());
+        LLVMDisposeMessage(output);
+
+        // Clean up. Valgrind will be proud.
+        LLVMDisposeBuilder(GeradorLLVMIR.getBuilder());
+        LLVMDisposeModule(GeradorLLVMIR.getModule());
 
     }
     
