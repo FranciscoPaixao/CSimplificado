@@ -14,14 +14,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.bytedeco.javacpp.BytePointer;
-import org.bytedeco.javacpp.Pointer;
-import static org.bytedeco.llvm.global.LLVM.LLVMAbortProcessAction;
-import static org.bytedeco.llvm.global.LLVM.LLVMDisposeBuilder;
-import static org.bytedeco.llvm.global.LLVM.LLVMDisposeMessage;
-import static org.bytedeco.llvm.global.LLVM.LLVMDisposeModule;
-import static org.bytedeco.llvm.global.LLVM.LLVMPrintModuleToString;
-import static org.bytedeco.llvm.global.LLVM.LLVMVerifyModule;
 
 /**
  *
@@ -33,9 +25,9 @@ public class Teste {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        String codigo = "main() {} ";
-        CharStream codigoFonte = CharStreams.fromString(codigo);
-        
+
+        CharStream codigoFonte = CharStreams.fromFileName("teste.c");
+
         CSimplificadoLexer lexer = new CSimplificadoLexer(codigoFonte);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -52,20 +44,17 @@ public class Teste {
         parser.addErrorListener(errosSintaticos);
 
         ParseTree tree = parser.program();
-        
-        ParseTreeWalker walker = new ParseTreeWalker();
-        
+
         CSErrorListenerSemantico errosSemanticos = new CSErrorListenerSemantico(lexer);
-        
-        //walker.walk(errosSemanticos, tree);
-        for(String erro : errosSemanticos.getErrosSemanticos()){
-            System.out.println(erro);
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(errosSemanticos, tree);
+
+        if(errosSemanticos.getErrosSemanticos().size() == 0) {
+            System.out.println("Nenhum erro semântico encontrado!");
+            String GeradorLLVMIR = new CSGeradorIRVisitor(errosSemanticos.getListaVariaveis()).visit(tree);
+            System.out.println(GeradorLLVMIR);
         }
 
-        String GeradorLLVMIR = new CSGeradorIRVisitor().visit(tree);
-        System.out.println(GeradorLLVMIR);
-        CSGeradorIRListener geradorIR = new CSGeradorIRListener();
-        walker.walk(geradorIR, tree);
     }
     
 }

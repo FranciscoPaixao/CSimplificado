@@ -24,8 +24,9 @@ principal: MAIN LPAREN RPAREN bloco;
 
 bloco: LBRACE listaVariaveis listaComandos RBRACE;
 
-listaVariaveis: tipoBase ID listaID SEMICOLON listaVariaveis |;
-listaID: COMMA ID listaID |;
+listaVariaveis: tipoBase ID listaID SEMICOLON |;
+
+listaID: COMMA tipoBase ID listaID |;
 
 comandos: listaComandos SEMICOLON comandos |;
 
@@ -47,11 +48,9 @@ novoTermoLeitura: COMMA termoLeitura novoTermoLeitura |;
 dimensao2: LBRACKET expressao_aditiva RBRACKET dimensao2 |;
 
 escrita:
-	PRINTLN LPAREN termoEscrita novoTermoEscrita RPAREN SEMICOLON;
+	PRINTLN LPAREN termoEscrita RPAREN SEMICOLON;
 
-termoEscrita: ID dimensao2 | constante | TEXTO;
-
-novoTermoEscrita: COMMA termoEscrita novoTermoEscrita |;
+termoEscrita: ID | constante | TEXTO;
 
 selecao: IF LPAREN expressao RPAREN bloco senao;
 

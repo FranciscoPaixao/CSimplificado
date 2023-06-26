@@ -43,7 +43,12 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
     private String funcaoChamada;
 
     public CSErrorListenerSemantico(CSimplificadoLexer lexer) {
+
         this.lexer = lexer;
+    }
+
+    public HashMap<String, HashMap<String, String>> getListaVariaveis() {
+        return listaVariaveis;
     }
 
     @Override
@@ -75,7 +80,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
         if (listaVariaveis.get(funcaoAtual).containsKey(ctx.ID().getText())) {
             int linha = ctx.getStart().getLine();
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: variável " + ctx.ID().getText() + " já declarada");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: variável " + ctx.ID().getText() + " já declarada");
             return;
         }
 
@@ -92,7 +97,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
         if (listaVariaveis.get(funcaoAtual).containsKey(ctx.ID().getText())) {
             int linha = ctx.getStart().getLine();
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: variável " + ctx.ID().getText() + " já declarada");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: variável " + ctx.ID().getText() + " já declarada");
             return;
         }
         listaVariaveis.get(funcaoAtual).put(ctx.ID().getText(), tempTipoBase);
@@ -120,7 +125,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
             if (!listaVariaveis.get(funcaoAtual).containsKey(ctx.getStart().getText())) {
                 int linha = ctx.getStart().getLine();
                 int coluna = ctx.getStart().getCharPositionInLine() + 1;
-                System.out.println("Erro semântico [" + linha + ", " + coluna + "]: variável " + identificador + " não declarada");
+                erros.add("Erro semântico [" + linha + ", " + coluna + "]: variável " + identificador + " não declarada");
                 return;
             }
         }
@@ -157,11 +162,11 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
                 int linha = ctx.getStart().getLine();
                 int coluna = ctx.getStart().getCharPositionInLine() + 1;
                 if (ehChamadaFuncao) {
-                    System.out.println("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + ctx.getStart().getText() + "' (" + tipoVariavel + ") não é compatível com o tipo do parâmetro (" + tipoAceito + ") requerido pela função '" + funcaoChamada + "'");
+                    erros.add("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + ctx.getStart().getText() + "' (" + tipoVariavel + ") não é compatível com o tipo do parâmetro (" + tipoAceito + ") requerido pela função '" + funcaoChamada + "'");
                 } else if (ehAtribuicao) {
-                    System.out.println("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + ctx.getStart().getText() + "' (" + tipoVariavel + ") não é compatível com o tipo da variável " + variavelAtribuicao + " (" + tipoAceito + ")");
+                    erros.add("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + ctx.getStart().getText() + "' (" + tipoVariavel + ") não é compatível com o tipo da variável " + variavelAtribuicao + " (" + tipoAceito + ")");
                 } else {
-                    System.out.println("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + ctx.getStart().getText() + "' (" + tipoVariavel + ") não é compatível com o tipo de retorno da função (" + tipoAceito + ")");
+                    erros.add("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + ctx.getStart().getText() + "' (" + tipoVariavel + ") não é compatível com o tipo de retorno da função (" + tipoAceito + ")");
                 }
                 return;
             }
@@ -211,7 +216,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
         if (!listaVariaveis.get(funcaoAtual).containsKey(ctx.ID().getText())) {
             int linha = ctx.getStart().getLine();
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: variável " + ctx.ID().getText() + " não declarada");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: variável " + ctx.ID().getText() + " não declarada");
             return;
         }
         ehAtribuicao = true;
@@ -240,7 +245,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
         if (listaFuncoes.containsKey(ctx.ID().getText())) {
             int linha = ctx.getStart().getLine();
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: função " + ctx.ID().getText() + " já declarada");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: função " + ctx.ID().getText() + " já declarada");
             return;
         }
 
@@ -286,7 +291,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
         if (listaVariaveis.get(funcaoAtual).containsKey(ctx.ID().getText())) {
             int linha = ctx.getStart().getLine();
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: variável " + tempNomeParametro + " já declarada");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: variável " + tempNomeParametro + " já declarada");
             return;
         }
 
@@ -305,7 +310,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
         if (listaVariaveis.get(funcaoAtual).containsKey(ctx.ID().getText())) {
             int linha = ctx.getStart().getLine();
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: variável " + tempNomeParametro + " já declarada");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: variável " + tempNomeParametro + " já declarada");
             return;
         }
 
@@ -325,7 +330,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
             if(!definiuRetorno) {
                 int linha = ctx.getStart().getLine();
                 int coluna = ctx.getStart().getCharPositionInLine() + 1;
-                System.out.println("Erro semântico [" + linha + ", " + coluna + "]: função '" + ctx.ID().getText() + "' requer retorno do tipo '" + listaFuncoes.get(ctx.ID().getText()) + "'");
+                erros.add("Erro semântico [" + linha + ", " + coluna + "]: função '" + ctx.ID().getText() + "' requer retorno do tipo '" + listaFuncoes.get(ctx.ID().getText()) + "'");
             }
         }
         precisaDefinirRetorno = false;
@@ -344,7 +349,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
 
         System.out.println("Entrou na chamada de funcao");
         if (!listaFuncoes.containsKey(ctx.ID().getText())) {
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: função " + ctx.ID().getText() + " não declarada");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: função " + ctx.ID().getText() + " não declarada");
             return;
         }
         if(ehAtribuicao){
@@ -352,7 +357,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
             String tipoRecebido = listaFuncoes.get(ctx.ID().getText());
             if(!tipoAceito.equals(tipoRecebido)){
 
-                System.out.println("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + variavelAtribuicao + "' (" + tipoAceito + ") não é compatível com o tipo de retorno da função '" + ctx.ID().getText() + "' (" + tipoRecebido + ")");
+                erros.add("Erro semântico [" + linha + ", " + coluna + "]: O tipo da variável '" + variavelAtribuicao + "' (" + tipoAceito + ") não é compatível com o tipo de retorno da função '" + ctx.ID().getText() + "' (" + tipoRecebido + ")");
                 return;
             }
         }
@@ -371,7 +376,7 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
         if (tempContadorParametrosRequeridosRestantes != 0) {
             int linha = ctx.getStart().getLine();
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
-            System.out.println("Erro semântico [" + linha + ", " + coluna + "]: A função '" + funcaoChamada + "' requer " + listaParametrosFuncoes.get(funcaoChamada).size() + " argumento(s), mas " + tempContadorParametros + " atende(m) aos requisitos foi(ram) passado(s)");
+            erros.add("Erro semântico [" + linha + ", " + coluna + "]: A função '" + funcaoChamada + "' requer " + listaParametrosFuncoes.get(funcaoChamada).size() + " argumento(s), mas " + tempContadorParametros + " atende(m) aos requisitos foi(ram) passado(s)");
         }
     }
 }

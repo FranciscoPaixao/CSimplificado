@@ -6,13 +6,7 @@ package br.sou.dev.classes;
 
 import antlr.CSimplificadoBaseVisitor;
 import antlr.CSimplificadoParser;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
-
-import java.awt.desktop.SystemSleepEvent;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashMap;
 
 /**
@@ -27,7 +21,12 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
 
     private ArrayList<String> operacoesAtuais = new ArrayList<String>();
     private HashMap<String, HashMap<String, String>> listaVariaveis;
+    private ArrayList<String> listaPrintln = new ArrayList<String>();
+
     public CSGeradorIRVisitor(HashMap<String, HashMap<String, String>> listaVariaveis){
+        this.listaVariaveis = listaVariaveis;
+    }
+    public void definirListaVariaveis(HashMap<String, HashMap<String, String>> listaVariaveis){
         this.listaVariaveis = listaVariaveis;
     }
     private String getOperadorLLVM(String operador){
@@ -170,15 +169,17 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
             return "";
         }
         String codigoIR = "";
-        String tipo = getTipoDaVariavelLLVM(ctx.ID().getText());
+        String tipoLLVM = getTipoDaVariavelLLVM(ctx.ID().getText());
         String nomeVariavel = ctx.ID().getText();
+
         this.variavelAtual = nomeVariavel;
+
         String variavelTemporaria = visit(ctx.complementoAtribuicao());
         for(String op : operacoesAtuais){
             codigoIR += op;
         }
-        codigoIR +=  "store " + tipo + " " + variavelTemporaria + ", " + tipo + "* %" + nomeVariavel + "\n";
-        this.operacoesAtuais.clear();
+        codigoIR +=  "store " + tipoLLVM + " " + variavelTemporaria + ", " + tipoLLVM + "* %" + nomeVariavel + "\n";
+        operacoesAtuais.clear();
         return codigoIR;
     }
      @Override
@@ -186,39 +187,68 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
         if(ctx.getChildCount() == 1){
             return visitChildren(ctx);
         }
+        System.out.println("visitExpressao_aditiva");
         String codigoIR = "";
-        String tipo = getTipoDaVariavelLLVM(variavelAtual);
 
-        String valorEsquerdo = visit(ctx.expressao_multiplicativa(0));
+        String valorEsquerdo = visit(ctx.getChild(0));
+         System.out.println("valorEsquerdo: " + valorEsquerdo);
+
         String operador = ctx.getChild(1).getText();
-        String valorDireito = visit(ctx.expressao_multiplicativa(2));
+        System.out.println("operador: " + operador);
+
+        String valorDireito = visit(ctx.getChild(2));
+        System.out.println("valorDireito: " + valorDireito);
+
 
         String variavelTemporaria = "%" + contadorTemporarios++;
-        codigoIR = variavelTemporaria + " = " + getOperadorLLVM(operador) + " " + tipo + " " + valorEsquerdo + ", " + valorDireito + "\n";
+        codigoIR = variavelTemporaria + " = " + getOperadorLLVM(operador) + " " + getTipoDaVariavelLLVM(variavelAtual) + " " + valorEsquerdo + ", " + valorDireito + "\n";
         this.operacoesAtuais.add(codigoIR);
         return variavelTemporaria;
     }
     @Override
     public String visitExpressao_multiplicativa(CSimplificadoParser.Expressao_multiplicativaContext ctx) {
+
         if(ctx.getChildCount() == 1){
             return visitChildren(ctx);
         }
-        String codigoIR = "";
-        String tipo = getTipoDaVariavelLLVM(variavelAtual);
-        String valorEsquerdo = visit(ctx.getChild(0));
-        String operador = ctx.getChild(1).getText();
-        String valorDireito = visit(ctx.getChild(2));
 
+        System.out.println("visitExpressao_multiplicativa");
+        String codigoIR = "";
+
+        String valorEsquerdo = visit(ctx.getChild(0));
         System.out.println("valorEsquerdo: " + valorEsquerdo);
-        System.out.println("valorDireito: " + valorDireito);
+
+        String operador = ctx.getChild(1).getText();
         System.out.println("operador: " + operador);
 
+        String valorDireito = visit(ctx.getChild(2));
+        System.out.println("valorDireito: " + valorDireito);
+
+
         String variavelTemporaria = "%" + contadorTemporarios++;
-        codigoIR = variavelTemporaria + " = " + getOperadorLLVM(operador) + " " + tipo + " " + valorEsquerdo + ", " + valorDireito + "\n";
+
+
+        codigoIR = variavelTemporaria + " = " + getOperadorLLVM(operador) + " " + getTipoDaVariavelLLVM(variavelAtual) + " " + valorEsquerdo + ", " + valorDireito + "\n";
         this.operacoesAtuais.add(codigoIR);
         return variavelTemporaria;
     }
-    @Override public String visitConstante(CSimplificadoParser.ConstanteContext ctx) {
+    @Override
+    public String visitConstante(CSimplificadoParser.ConstanteContext ctx) {
         return ctx.getText();
+    }
+    @Override
+    public String visitFator(CSimplificadoParser.FatorContext ctx) {
+        if(ctx.expressao() != null){
+            return visit(ctx.expressao());
+        }
+        return visitChildren(ctx);
+    }
+    @Override public String visitEscrita(CSimplificadoParser.EscritaContext ctx) {
+        //ctx.termoEscrita();
+        return visitChildren(ctx);
+    }
+    @Override
+    public String visitTermoEscrita(CSimplificadoParser.TermoEscritaContext ctx) {
+        return visitChildren(ctx);
     }
 }
