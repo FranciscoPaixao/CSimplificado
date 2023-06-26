@@ -50,15 +50,16 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
     public HashMap<String, HashMap<String, String>> getListaVariaveis() {
         return listaVariaveis;
     }
+    @Override
+    public void enterPrincipal(CSimplificadoParser.PrincipalContext ctx) {
+        System.out.println("Entrou no principal");
+        this.funcaoAtual = "main";
+        listaVariaveis.put(funcaoAtual, new HashMap<>());
+    }
 
     @Override
     public void enterBloco(CSimplificadoParser.BlocoContext ctx) {
         System.out.println("Entrou no bloco");
-        if (ehFuncao) {
-            return;
-        }
-        this.funcaoAtual = "main";
-        listaVariaveis.put(funcaoAtual, new HashMap<>());
     }
 
     @Override
@@ -378,5 +379,14 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
             int coluna = ctx.getStart().getCharPositionInLine() + 1;
             erros.add("Erro semântico [" + linha + ", " + coluna + "]: A função '" + funcaoChamada + "' requer " + listaParametrosFuncoes.get(funcaoChamada).size() + " argumento(s), mas " + tempContadorParametros + " atende(m) aos requisitos foi(ram) passado(s)");
         }
+    }
+    @Override
+    public void enterTermoEscrita(CSimplificadoParser.TermoEscritaContext ctx) {
+            System.out.println("Entrou no termo escrita");
+           if(ctx.TEXTO() == null && ctx.constante() == null){
+               int linha = ctx.getStart().getLine();
+                int coluna = ctx.getStart().getCharPositionInLine() + 1;
+                erros.add("Erro semântico [" + linha + ", " + coluna + "]: A função 'println' requer um argumento do tipo 'texto', 'int' ou 'float'");
+           }
     }
 }

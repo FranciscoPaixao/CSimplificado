@@ -29,13 +29,9 @@ listaVariaveis: tipoBase ID listaID SEMICOLON listaVariaveis |;
 listaID: COMMA tipoBase ID listaID |;
 
 
+secaoComandos: listaComandos | ;
 
-secaoComandos: listaComandos
-             | // vazio, o símbolo ε em BNF é simplesmente omitido em ANTLR4
-             ;
-
-listaComandos: comando listaComandos?
-             ;
+listaComandos: comando listaComandos? ;
 
 comando: leitura
        | escrita
@@ -45,10 +41,6 @@ comando: leitura
        | enquanto
        | retorno
        ;
-
-
-
-
 leitura:
 	SCANF LPAREN termoLeitura novoTermoLeitura RPAREN SEMICOLON;
 
@@ -61,7 +53,7 @@ dimensao2: LBRACKET expressao_aditiva RBRACKET dimensao2 |;
 escrita:
 	PRINTLN LPAREN termoEscrita RPAREN SEMICOLON;
 
-termoEscrita: termo | TEXTO;
+termoEscrita: constante | TEXTO;
 
 selecao: IF LPAREN expressao RPAREN bloco senao;
 
@@ -105,7 +97,7 @@ fator:
 	| LPAREN expressao RPAREN;
 termo: ID dimensao2 | constante;
 
-constante: NUM_INT | NUM_DEC | TRUE | FALSE;
+constante: NUM_INT | NUM_DEC;
 
 CHAR: 'char';
 FLOAT: 'float';
