@@ -119,10 +119,7 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
     }
     @Override
     public String visitBloco(CSimplificadoParser.BlocoContext ctx) {
-        if(ctx.listaVariaveis() == null && ctx.listaComandos() == null){
-            return "";
-        }
-        String codigoIR = "\n" + visit(ctx.listaVariaveis()) + visit(ctx.listaComandos());
+        String codigoIR = "\n" + visitListaVariaveis(ctx.listaVariaveis()) + visitSecaoComandos(ctx.secaoComandos());
         return codigoIR;
     }
     @Override
@@ -155,11 +152,12 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
     }
     @Override
     public String visitListaComandos(CSimplificadoParser.ListaComandosContext ctx) {
-        if(ctx == null){
-            return "";
-        }
         String codigoIR = "";
-        codigoIR = visitChildren(ctx);
+
+        codigoIR = visit(ctx.comando());
+        if (ctx.listaComandos() != null) {
+            codigoIR += visit(ctx.listaComandos());
+        }
 
         return codigoIR;
     }
@@ -175,11 +173,11 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
         this.variavelAtual = nomeVariavel;
 
         String variavelTemporaria = visit(ctx.complementoAtribuicao());
-        for(String op : operacoesAtuais){
+        for(String op : this.operacoesAtuais){
             codigoIR += op;
         }
+        this.operacoesAtuais.clear();
         codigoIR +=  "store " + tipoLLVM + " " + variavelTemporaria + ", " + tipoLLVM + "* %" + nomeVariavel + "\n";
-        operacoesAtuais.clear();
         return codigoIR;
     }
      @Override
@@ -187,17 +185,17 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
         if(ctx.getChildCount() == 1){
             return visitChildren(ctx);
         }
-        System.out.println("visitExpressao_aditiva");
+        //System.out.println("visitExpressao_aditiva");
         String codigoIR = "";
 
         String valorEsquerdo = visit(ctx.getChild(0));
-         System.out.println("valorEsquerdo: " + valorEsquerdo);
+        //System.out.println("valorEsquerdo: " + valorEsquerdo);
 
         String operador = ctx.getChild(1).getText();
-        System.out.println("operador: " + operador);
+        //System.out.println("operador: " + operador);
 
         String valorDireito = visit(ctx.getChild(2));
-        System.out.println("valorDireito: " + valorDireito);
+        //System.out.println("valorDireito: " + valorDireito);
 
 
         String variavelTemporaria = "%" + contadorTemporarios++;
@@ -212,17 +210,17 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
             return visitChildren(ctx);
         }
 
-        System.out.println("visitExpressao_multiplicativa");
+        //System.out.println("visitExpressao_multiplicativa");
         String codigoIR = "";
 
         String valorEsquerdo = visit(ctx.getChild(0));
-        System.out.println("valorEsquerdo: " + valorEsquerdo);
+        //System.out.println("valorEsquerdo: " + valorEsquerdo);
 
         String operador = ctx.getChild(1).getText();
-        System.out.println("operador: " + operador);
+        //System.out.println("operador: " + operador);
 
         String valorDireito = visit(ctx.getChild(2));
-        System.out.println("valorDireito: " + valorDireito);
+        //System.out.println("valorDireito: " + valorDireito);
 
 
         String variavelTemporaria = "%" + contadorTemporarios++;

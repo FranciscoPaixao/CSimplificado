@@ -22,22 +22,33 @@ listaParametros: COMMA tipoBase ID listaParametros |;
 
 principal: MAIN LPAREN RPAREN bloco;
 
-bloco: LBRACE listaVariaveis listaComandos RBRACE;
+bloco: LBRACE listaVariaveis secaoComandos RBRACE;
 
-listaVariaveis: tipoBase ID listaID SEMICOLON |;
+listaVariaveis: tipoBase ID listaID SEMICOLON listaVariaveis |;
 
 listaID: COMMA tipoBase ID listaID |;
 
-comandos: listaComandos SEMICOLON comandos |;
 
-listaComandos:(
-	leitura
-	| escrita
-	| atribuicao
-	| chamadaFuncao SEMICOLON
-	| selecao
-	| enquanto
-	| retorno)*;
+
+secaoComandos: listaComandos
+             | // vazio, o símbolo ε em BNF é simplesmente omitido em ANTLR4
+             ;
+
+listaComandos: comando listaComandos?
+             ;
+
+comando: leitura
+       | escrita
+       | atribuicao
+       | chamadaFuncao SEMICOLON
+       | selecao
+       | enquanto
+       | retorno
+       ;
+
+
+
+
 leitura:
 	SCANF LPAREN termoLeitura novoTermoLeitura RPAREN SEMICOLON;
 
@@ -50,7 +61,7 @@ dimensao2: LBRACKET expressao_aditiva RBRACKET dimensao2 |;
 escrita:
 	PRINTLN LPAREN termoEscrita RPAREN SEMICOLON;
 
-termoEscrita: ID | constante | TEXTO;
+termoEscrita: termo | TEXTO;
 
 selecao: IF LPAREN expressao RPAREN bloco senao;
 
