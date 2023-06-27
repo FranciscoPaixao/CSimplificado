@@ -40,7 +40,7 @@ if(x > 20)
 ```
 O bloco de codigo do While e IF não está executando as funções corretamente, funcionando apenas chamadas de função e atribuições basicas.
 
-Não suporta instruções complexas com o mesmo operador, como "2\*3\*4", sem uso de parênteses.
+Não suporta instruções complexas, como "2\*3\*4", sem uso de parênteses.
 ```
 x = 2*3*4 // Não funciona
 
@@ -50,6 +50,9 @@ x = x*4 // Funciona
 x = (2*3)*4 // Funciona
 ```
 
+A Análise Semântica não abrange toda gramática. Por exemplo, a introdução de um valor Decimal para acessar o valor de um array não é tida como erro.
+
+O contador de variáveis temporárias do Gerador de LLVM IR não está iniciando em %1 e pode não seguir a sequência correta (exigências definidas pelo LLVM), podendo começar em %2 ou %3, o que é tido como incorreto pelo LLVM. Para fins de teste, a renomeação correta pode ser feita manualmente após a geração do LLVM IR. 
 ## Autores
 
 - [@FranciscoPaixao](https://www.github.com/FranciscoPaixao) Análise Léxica, Sintática, Semântica e Geração de LLVM IR
