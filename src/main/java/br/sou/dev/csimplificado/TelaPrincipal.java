@@ -313,6 +313,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         } catch (BadLocationException ex) {
         }
         tp_Erros.setText(controlador.obterErrosTexto());
+        
+        //Atualizar LLVM IR
+        tp_LLVMIR.setText(controlador.ObterLLVMIR());
 
         //Atualiza AST Viewer
         sp_Arvore.setViewportView(controlador.ObterASTViewer());

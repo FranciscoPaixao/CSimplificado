@@ -392,6 +392,26 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
         return codigoIR;
     }
     @Override
+    public String visitEnquanto(CSimplificadoParser.EnquantoContext ctx) {
+        if(ctx == null){
+            return "";
+        }
+        String codigoIR = "";
+        String variavelTemporaria = visit(ctx.expressao());
+        codigoIR += "br label %while_loop" + variavelTemporaria + "\n";
+        codigoIR += "while_loop" + variavelTemporaria + ":\n";
+        for(String op: this.operacoesRelacionais){
+            codigoIR += op;
+        }
+        codigoIR += "br i1 %" + variavelTemporaria + ", label %while_true" + variavelTemporaria + ", label %while_end" + variavelTemporaria + "\n";
+        codigoIR += "while_true" + variavelTemporaria + ":\n";
+        codigoIR += visit(ctx.bloco());
+        codigoIR += "br label %while_loop" + variavelTemporaria + "\n";
+        codigoIR += "while_end" + variavelTemporaria + ":\n";
+        this.operacoesRelacionais.clear();
+        return codigoIR;
+    }
+    @Override
     public String visitSenao(CSimplificadoParser.SenaoContext ctx) {
         if(ctx.bloco() != null){
             return visit(ctx.bloco());
