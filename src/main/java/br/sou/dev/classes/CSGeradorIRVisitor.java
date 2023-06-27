@@ -19,9 +19,9 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
     private String funcaoAtual = "main";
     private String variavelAtual = "";
 
-    private ArrayList<String> operacoesAritmeticas = new ArrayList<String>();
-    private ArrayList<String> operacoesRelacionais = new ArrayList<String>();
-    private ArrayList<String> operacoesDeIgualdade = new ArrayList<String>();
+    private ArrayList<String> comandosPrintln = new ArrayList<>();
+    private ArrayList<String> operacoesAritmeticas = new ArrayList<>();
+    private ArrayList<String> operacoesRelacionais = new ArrayList<>();
     private HashMap<String, HashMap<String, String>> listaVariaveis;
     private ArrayList<String> listaPrintln = new ArrayList<String>();
 
@@ -73,10 +73,14 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
     @Override
     public String visitProgram(CSimplificadoParser.ProgramContext ctx) {
         String codigoIR = "";
-        codigoIR += "declare i32 @printf(i8*, ...)\n";
-        codigoIR += "@formatString = constant [3 x i8] c\"%d\\00\"\n";
-
-        codigoIR += visitListaFuncoes(ctx.listaFuncoes()) + visitPrincipal(ctx.principal());
+        String codigoIRGlobal = visitListaFuncoes(ctx.listaFuncoes()) + visitPrincipal(ctx.principal());
+        if(!this.comandosPrintln.isEmpty()){
+            codigoIR += "\n\n; Comandos de print\n";
+            for(String comando : this.comandosPrintln){
+                codigoIR += comando;
+            }
+        }
+        codigoIR += codigoIRGlobal;
         return codigoIR;
     }
     @Override
@@ -259,12 +263,14 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
         }
         return visitChildren(ctx);
     }
-    @Override public String visitEscrita(CSimplificadoParser.EscritaContext ctx) {
+    @Override
+    public String visitEscrita(CSimplificadoParser.EscritaContext ctx) {
         //ctx.termoEscrita();
         return visitChildren(ctx);
     }
     @Override
     public String visitTermoEscrita(CSimplificadoParser.TermoEscritaContext ctx) {
+
         return visitChildren(ctx);
     }
     @Override
@@ -303,8 +309,139 @@ public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
         return "\n";
     }
     @Override
+    public String visitExpressao_OU(CSimplificadoParser.Expressao_OUContext ctx) {
+        if (ctx.getChildCount() == 1) {
+            return visitChildren(ctx);
+        }
+        //System.out.println("visitExpressao_relacional");
+
+        String codigoIR = "";
+
+        String valorEsquerdo = visit(ctx.getChild(0));
+        //System.out.println("valorEsquerdo: " + valorEsquerdo);
+
+        String operador = ctx.getChild(1).getText();
+        //System.out.println("operador: " + operador);
+
+        String valorDireito = visit(ctx.getChild(2));
+        //System.out.println("valorDireito: " + valorDireito);
+
+        String variavelTemporaria = String.valueOf(contadorTemporarios++);
+        String tipoComparacao = "double";
+        if(getTipoDaVariavelLLVM(valorEsquerdo).equals("i32") && getTipoDaVariavelLLVM(valorDireito).equals("i32")){
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            tipoComparacao = "i32";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("double") && getTipoDaVariavelLLVM(valorDireito).equals("double")) {
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("double") && getTipoDaVariavelLLVM(valorDireito).equals("i32")) {
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_i = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            codigoIR += "%" + valorDireito + "_l = sitofp i32 %" + valorDireito + "_i to double\n";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("i32") && getTipoDaVariavelLLVM(valorDireito).equals("double")){
+            codigoIR += "%" + valorEsquerdo + "_i = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            codigoIR += "%" + valorEsquerdo + "_l = sitofp i32 %" + valorEsquerdo + "_i to double \n";
+        }
+
+        if(tipoComparacao.equals("i32")) {
+            codigoIR += "%" + variavelTemporaria + " = icmp " + getOperadorLLVM(operador) + " " + tipoComparacao + " %" + valorEsquerdo + "_l, %" + valorDireito + "_l\n";
+        }else{
+            codigoIR += "%" + variavelTemporaria + " = fcmp " + getOperadorLLVM(operador) + " " + tipoComparacao + " %" + valorEsquerdo + "_l, %" + valorDireito + "_l\n";
+        }
+        this.operacoesRelacionais.add(codigoIR);
+        return variavelTemporaria;
+    }
+    @Override
+    public String visitExpressao_E(CSimplificadoParser.Expressao_EContext ctx) {
+        if (ctx.getChildCount() == 1) {
+            return visitChildren(ctx);
+        }
+        //System.out.println("visitExpressao_relacional");
+
+        String codigoIR = "";
+
+        String valorEsquerdo = visit(ctx.getChild(0));
+        //System.out.println("valorEsquerdo: " + valorEsquerdo);
+
+        String operador = ctx.getChild(1).getText();
+        //System.out.println("operador: " + operador);
+
+        String valorDireito = visit(ctx.getChild(2));
+        //System.out.println("valorDireito: " + valorDireito);
+
+        String variavelTemporaria = String.valueOf(contadorTemporarios++);
+        String tipoComparacao = "double";
+        if(getTipoDaVariavelLLVM(valorEsquerdo).equals("i32") && getTipoDaVariavelLLVM(valorDireito).equals("i32")){
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            tipoComparacao = "i32";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("double") && getTipoDaVariavelLLVM(valorDireito).equals("double")) {
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("double") && getTipoDaVariavelLLVM(valorDireito).equals("i32")) {
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_i = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            codigoIR += "%" + valorDireito + "_l = sitofp i32 %" + valorDireito + "_i to double\n";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("i32") && getTipoDaVariavelLLVM(valorDireito).equals("double")){
+            codigoIR += "%" + valorEsquerdo + "_i = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            codigoIR += "%" + valorEsquerdo + "_l = sitofp i32 %" + valorEsquerdo + "_i to double \n";
+        }
+
+        if(tipoComparacao.equals("i32")) {
+            codigoIR += "%" + variavelTemporaria + " = icmp " + getOperadorLLVM(operador) + " " + tipoComparacao + " %" + valorEsquerdo + "_l, %" + valorDireito + "_l\n";
+        }else{
+            codigoIR += "%" + variavelTemporaria + " = fcmp " + getOperadorLLVM(operador) + " " + tipoComparacao + " %" + valorEsquerdo + "_l, %" + valorDireito + "_l\n";
+        }
+        this.operacoesRelacionais.add(codigoIR);
+        return variavelTemporaria;
+    }
+    @Override
     public String visitExpressao_igualdade(CSimplificadoParser.Expressao_igualdadeContext ctx) {
-        return visitChildren(ctx);
+        if (ctx.getChildCount() == 1) {
+            return visitChildren(ctx);
+        }
+        //System.out.println("visitExpressao_relacional");
+
+        String codigoIR = "";
+
+        String valorEsquerdo = visit(ctx.getChild(0));
+        //System.out.println("valorEsquerdo: " + valorEsquerdo);
+
+        String operador = ctx.getChild(1).getText();
+        //System.out.println("operador: " + operador);
+
+        String valorDireito = visit(ctx.getChild(2));
+        //System.out.println("valorDireito: " + valorDireito);
+
+        String variavelTemporaria = String.valueOf(contadorTemporarios++);
+        String tipoComparacao = "double";
+        if(getTipoDaVariavelLLVM(valorEsquerdo).equals("i32") && getTipoDaVariavelLLVM(valorDireito).equals("i32")){
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            tipoComparacao = "i32";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("double") && getTipoDaVariavelLLVM(valorDireito).equals("double")) {
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("double") && getTipoDaVariavelLLVM(valorDireito).equals("i32")) {
+            codigoIR += "%" + valorEsquerdo + "_l = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_i = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            codigoIR += "%" + valorDireito + "_l = sitofp i32 %" + valorDireito + "_i to double\n";
+        }else if(getTipoDaVariavelLLVM(valorEsquerdo).equals("i32") && getTipoDaVariavelLLVM(valorDireito).equals("double")){
+            codigoIR += "%" + valorEsquerdo + "_i = load " + getTipoDaVariavelLLVM(valorEsquerdo) + ", " + getTipoDaVariavelLLVM(valorEsquerdo) + "* %" + valorEsquerdo + "\n";
+            codigoIR += "%" + valorDireito + "_l = load " + getTipoDaVariavelLLVM(valorDireito) + ", " + getTipoDaVariavelLLVM(valorDireito) + "* %" + valorDireito + "\n";
+            codigoIR += "%" + valorEsquerdo + "_l = sitofp i32 %" + valorEsquerdo + "_i to double \n";
+        }
+
+        if(tipoComparacao.equals("i32")) {
+            codigoIR += "%" + variavelTemporaria + " = icmp " + getOperadorLLVM(operador) + " " + tipoComparacao + " %" + valorEsquerdo + "_l, %" + valorDireito + "_l\n";
+        }else{
+            codigoIR += "%" + variavelTemporaria + " = fcmp " + getOperadorLLVM(operador) + " " + tipoComparacao + " %" + valorEsquerdo + "_l, %" + valorDireito + "_l\n";
+        }
+        this.operacoesRelacionais.add(codigoIR);
+        return variavelTemporaria;
     }
     @Override
     public String visitExpressao_relacional(CSimplificadoParser.Expressao_relacionalContext ctx) {

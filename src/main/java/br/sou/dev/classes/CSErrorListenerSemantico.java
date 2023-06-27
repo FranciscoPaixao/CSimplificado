@@ -138,11 +138,11 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
                 CSimplificadoParser.TEXTO
         ));
         if (tipoConstante.contains(ctx.getStart().getType()) || ehChamadaFuncao || ehAtribuicao || ehRetornoFuncao || ehFuncao) {
-            String tipoAceito;
-            String tipoVariavel;
-
+            String tipoAceito = "";
+            String tipoVariavel = "";
             if (ehChamadaFuncao) {
                 tipoAceito = listaParametrosFuncoes.get(funcaoChamada).get(tempContadorParametros);
+
             } else if (ehFuncao) {
                 tipoAceito = listaFuncoes.get(funcaoAtual);
             } else {
@@ -383,10 +383,17 @@ public class CSErrorListenerSemantico extends CSimplificadoBaseListener {
     @Override
     public void enterTermoEscrita(CSimplificadoParser.TermoEscritaContext ctx) {
             System.out.println("Entrou no termo escrita");
-           if(ctx.TEXTO() == null && ctx.constante() == null){
+           if(ctx.ID() == null && ctx.constante() == null){
                int linha = ctx.getStart().getLine();
                 int coluna = ctx.getStart().getCharPositionInLine() + 1;
                 erros.add("Erro semântico [" + linha + ", " + coluna + "]: A função 'println' requer um argumento do tipo 'texto', 'int' ou 'float'");
+                return;
            }
+                if(!listaVariaveis.get(funcaoAtual).containsKey(ctx.ID().getText())){
+                     int linha = ctx.getStart().getLine();
+                      int coluna = ctx.getStart().getCharPositionInLine() + 1;
+                      erros.add("Erro semântico [" + linha + ", " + coluna + "]: A variável '" + ctx.ID().getText() + "' não foi declarada");
+                }
+
     }
 }

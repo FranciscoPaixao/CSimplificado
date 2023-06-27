@@ -53,7 +53,7 @@ dimensao2: LBRACKET expressao_aditiva RBRACKET dimensao2 |;
 escrita:
 	PRINTLN LPAREN termoEscrita RPAREN SEMICOLON;
 
-termoEscrita: constante | TEXTO;
+termoEscrita: constante | ID;
 
 selecao: IF LPAREN expressao RPAREN bloco senao;
 
