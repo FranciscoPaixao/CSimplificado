@@ -40,7 +40,7 @@ if(x > 20)
 ```
 O bloco de codigo do While e IF não está executando as funções corretamente, funcionando apenas chamadas de função e atribuições basicas.
 
-Não suporta instruções complexas, como "2*3*4", sem uso de parênteses.
+Não suporta instruções complexas com o mesmo operador, como "2\*3\*4", sem uso de parênteses.
 ```
 x = 2*3*4 // Não funciona
 
