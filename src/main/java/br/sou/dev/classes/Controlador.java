@@ -143,7 +143,13 @@ public class Controlador {
         svgGenerator.stream(outputFile, true);
 
     }
-
+    public String ObterLLVMIR() {
+        if(errosSemanticos.getErrosSemanticos().size() > 0) {
+            return "";
+        }
+        String resultado = new CSGeradorIRVisitor(errosSemanticos.getListaVariaveis()).visit(tree);
+        return resultado;
+    }
     public List<String> obterErrosSintaticos() {
         return errosSintaticos.getErrosSintaticos();
     }

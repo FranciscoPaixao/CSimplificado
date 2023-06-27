@@ -1,8 +1,15 @@
 main(){
  int y;
  int x;
- x = 1+2;
- y = 2+3;
- x = y+x;
-println(x);
+ int r;
+ x = 2;
+ y = 3;
+ if(x > y){
+    r = 1;
+  println(r);
+ }
+ else{
+  r = 0;
+  println(r);
+ }
 }

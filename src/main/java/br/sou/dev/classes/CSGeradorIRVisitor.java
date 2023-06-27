@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 public class CSGeradorIRVisitor extends CSimplificadoBaseVisitor<String> {
 
-    private int contadorTemporarios = 0;
+    private int contadorTemporarios = 1;
     private String funcaoAtual = "main";
     private String variavelAtual = "";
 
