@@ -64,10 +64,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         fileChooser = new javax.swing.JFileChooser();
         sp_Tabela = new javax.swing.JScrollPane();
         tb_TabelaDeSimbolos = new javax.swing.JTable();
-        sp_CodigoFonte = new javax.swing.JScrollPane();
-        tp_CodigoFonte = new javax.swing.JTextPane();
         bt_SelecionarArquivo = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         tf_CaminhoArquivo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -81,6 +78,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        sp_CodigoFonte = new javax.swing.JScrollPane();
+        tp_CodigoFonte = new javax.swing.JTextPane();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        sp_CodigoFonte1 = new javax.swing.JScrollPane();
+        tp_LLVMIR = new javax.swing.JTextPane();
 
         fileChooser.setCurrentDirectory(new java.io.File("C:\\Users\\Francisco\\Documents\\GitHub\\CSimplificado"));
         fileChooser.setFileFilter(new filtroCustomizado());
@@ -145,13 +151,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         getContentPane().add(sp_Tabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 77, 430, 400));
 
-        sp_CodigoFonte.setToolTipText("");
-
-        tp_CodigoFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        sp_CodigoFonte.setViewportView(tp_CodigoFonte);
-
-        getContentPane().add(sp_CodigoFonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 77, 380, 240));
-
         bt_SelecionarArquivo.setText("Selecionar arquivo");
         bt_SelecionarArquivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,10 +158,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
         getContentPane().add(bt_SelecionarArquivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, -1, -1));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("Codigo Fonte:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Erros:");
@@ -210,6 +205,38 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel6.setText("Tabela de Símbolos");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, -1, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 873, 830, 10));
+
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("Codigo Fonte:");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, -1));
+
+        sp_CodigoFonte.setToolTipText("");
+
+        tp_CodigoFonte.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        sp_CodigoFonte.setViewportView(tp_CodigoFonte);
+
+        jPanel2.add(sp_CodigoFonte, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 380, 240));
+
+        jTabbedPane1.addTab("Codigo Fonte", jPanel2);
+
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setText("LLVM IR:");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, -1));
+
+        sp_CodigoFonte1.setToolTipText("");
+
+        tp_LLVMIR.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        sp_CodigoFonte1.setViewportView(tp_LLVMIR);
+
+        jPanel3.add(sp_CodigoFonte1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 380, 240));
+
+        jTabbedPane1.addTab("LLVM IR", jPanel3);
+
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 420, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -266,6 +293,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             controlador.FazerAnalise();
             tp_CodigoFonte.setText(controlador.ObterCodigoFonte());
+            tp_LLVMIR.setText(controlador.ObterLLVMIR());
             atualizarTelas();
         }
     }
@@ -307,14 +335,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JScrollPane sp_Arvore;
     private javax.swing.JScrollPane sp_CodigoFonte;
+    private javax.swing.JScrollPane sp_CodigoFonte1;
     private javax.swing.JScrollPane sp_Erros;
     private javax.swing.JScrollPane sp_Tabela;
     private javax.swing.JTable tb_TabelaDeSimbolos;
     private javax.swing.JTextField tf_CaminhoArquivo;
     private javax.swing.JTextPane tp_CodigoFonte;
     private javax.swing.JTextPane tp_Erros;
+    private javax.swing.JTextPane tp_LLVMIR;
     // End of variables declaration//GEN-END:variables
 }
