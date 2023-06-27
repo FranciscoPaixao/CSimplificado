@@ -1,8 +1,13 @@
 main(){
-int i;
-i = 1;
+int x;
+int y;
+x = 2*6;
+y = 2*3;
 
-while(i){
- println(i);
+
+if(y>x){
+ println(y);
+}else{
+ println(x);
 }
 }
