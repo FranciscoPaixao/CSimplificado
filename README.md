@@ -8,7 +8,7 @@ Este projeto é uma implementação do Front-End de um Compilador e faz parte de
 
 
 
-## Requerimento
+## Requerimentos
 1. JDK 17 (não testado com outras versões)
 
 2. Maven
@@ -27,7 +27,7 @@ Compile o projeto clicando em "Clean and Build" no NetBeans e execute clicando e
 
 
 
-## Documentação o LLVM IR
+## Documentação do LLVM IR
 https://llvm.org/docs/LangRef.html
 
 
