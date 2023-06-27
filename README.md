@@ -33,12 +33,12 @@ https://llvm.org/docs/LangRef.html
 
 
 ## Bugs conhecidos e limitações
-Nao aceita constantes em operações logicas e chamadas de função. Exemplo:
+Nao aceita constantes em operações lógicas e chamadas de função. Exemplo:
 ```
 println(1);
 if(x > 20)
 ```
-O bloco de codigo do While e IF não está executando as funções corretamente, funcionando apenas chamadas de função e atribuições basicas.
+O bloco de código do While e IF não está funcionando corretamente, apenas chamadas de função e atribuições basicas são executadas sem erros.
 
 Não suporta instruções complexas, como "2\*3\*4", sem uso de parênteses.
 ```
